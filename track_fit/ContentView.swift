@@ -6,83 +6,147 @@
 //
 
 import SwiftUI
-import CoreData
+import SwiftData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
-
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \StrengthWorkoutLog.date, order: .reverse) private var workoutLogs: [StrengthWorkoutLog]
+    
     var body: some View {
         NavigationView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                    } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
+            ZStack {
+                Color(red: 0.07, green: 0.07, blue: 0.07).ignoresSafeArea()
+                
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        headerSection
+                        
+                        quickActionsSection
+                        
+                        recentWorkoutsSection
                     }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-#endif
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
+                    .padding()
                 }
             }
-            Text("Select an item")
+            .navigationBarHidden(true)
         }
     }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+    
+    private var headerSection: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Track Fit")
+                .font(.system(size: 34, weight: .bold, design: .rounded))
+                .foregroundColor(.white)
+            Text("Let's crush it today!")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+        }
+        .padding(.top)
+    }
+    
+    private var quickActionsSection: some View {
+        VStack(spacing: 15) {
+            HStack(spacing: 15) {
+                NavigationLink(destination: WorkoutLoggingView()) {
+                    dashboardCard(title: "Log Workout", icon: "plus.circle.fill", color: .blue)
+                }
+                
+                NavigationLink(destination: ExerciseListView()) {
+                    dashboardCard(title: "Exercises", icon: "list.bullet.circle.fill", color: .green)
+                }
+            }
+            
+            NavigationLink(destination: ProgressChartView()) {
+                dashboardCard(title: "View Progress", icon: "chart.bar.fill", color: .orange)
             }
         }
     }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+    
+    private var recentWorkoutsSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Recent Workouts")
+                .font(.headline)
+                .foregroundColor(.white)
+            
+            if workoutLogs.isEmpty {
+                Text("No workouts recorded yet.")
+                    .foregroundColor(.gray)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.white.opacity(0.05))
+                    .cornerRadius(12)
+            } else {
+                ForEach(workoutLogs.prefix(5)) { log in
+                    WorkoutRow(log: log)
+                }
             }
         }
+    }
+    
+    private func dashboardCard(title: String, icon: String, color: Color) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 30))
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [color, color.opacity(0.7)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+            Text(title)
+                .font(.subheadline.bold())
+                .foregroundColor(.white)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white.opacity(0.05))
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(
+                            LinearGradient(
+                                colors: [Color.white.opacity(0.2), Color.white.opacity(0.05)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 1
+                        )
+                )
+        )
     }
 }
 
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
+struct WorkoutRow: View {
+    let log: StrengthWorkoutLog
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(log.exercise?.name ?? "Unknown Exercise")
+                    .font(.body.bold())
+                    .foregroundColor(.white)
+                Text(log.date.formatted(date: .abbreviated, time: .omitted))
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
+            Spacer()
+            Text("\(log.sets.count) sets")
+                .font(.caption.bold())
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color.blue.opacity(0.2))
+                .foregroundColor(.blue)
+                .clipShape(Capsule())
+        }
+        .padding()
+        .background(Color.white.opacity(0.05))
+        .cornerRadius(12)
+    }
+}
 
 #Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    ContentView()
+        .modelContainer(for: [StrengthExercise.self, StrengthWorkoutLog.self, StrengthSetLog.self], inMemory: true)
 }
