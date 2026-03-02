@@ -9,8 +9,26 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    var body: some View {
+        TabView {
+            DashboardView()
+                .tabItem {
+                    Label("Dashboard", systemImage: "house.fill")
+                }
+            
+            ProfileView()
+                .tabItem {
+                    Label("Profile", systemImage: "person.crop.circle")
+                }
+        }
+    }
+}
+
+struct DashboardView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \StrengthWorkoutLog.date, order: .reverse) private var workoutLogs: [StrengthWorkoutLog]
+    
+    @State private var latestWeight: Double?
     
     var body: some View {
         NavigationView {
@@ -29,17 +47,31 @@ struct ContentView: View {
                 }
             }
             .navigationBarHidden(true)
+            .onAppear {
+                fetchHealthData()
+            }
+        }
+    }
+    
+    private func fetchHealthData() {
+        if HealthKitManager.shared.isAuthorized {
+            HealthKitManager.shared.fetchLatestWeight { weight in
+                self.latestWeight = weight
+            }
         }
     }
     
     private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("Track Fit")
-                .font(.system(size: 34, weight: .bold, design: .rounded))
-                .foregroundColor(.white)
-            Text("Let's crush it today!")
-                .font(.subheadline)
-                .foregroundColor(.gray)
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Track Fit")
+                    .font(.system(size: 34, weight: .bold, design: .rounded))
+                    .foregroundColor(.white)
+                Text("Let's crush it today!")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+            }
+            Spacer()
         }
         .padding(.top)
     }

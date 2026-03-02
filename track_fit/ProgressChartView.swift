@@ -5,12 +5,14 @@ import Charts
 struct ProgressChartView: View {
     @Query private var workoutLogs: [StrengthWorkoutLog]
     @State private var selectedExercise: StrengthExercise?
+    @State private var latestWeight: Double?
     
     enum ProgressMetric: String, CaseIterable, Identifiable {
         case maxWeight = "Max Weight"
         case totalReps = "Total Reps"
         case totalSets = "Total Sets"
         case volume = "Volume"
+        case strengthToWeight = "Ratio (Max/BW)"
         
         var id: String { rawValue }
     }
@@ -41,45 +43,65 @@ struct ProgressChartView: View {
             .padding(.horizontal)
             .padding(.bottom)
             
-            Chart {
-                ForEach(filteredLogs) { log in
-                    let metricValue: Double? = {
-                        switch selectedMetric {
-                        case .maxWeight:
-                            return log.sets.map({ $0.weight }).max()
-                        case .totalReps:
-                            let reps = log.sets.map({ $0.reps }).reduce(0, +)
-                            return reps > 0 ? Double(reps) : nil
-                        case .totalSets:
-                            let setsCount = log.sets.count
-                            return setsCount > 0 ? Double(setsCount) : nil
-                        case .volume:
-                            let volume = log.sets.map({ $0.weight * Double($0.reps) }).reduce(0, +)
-                            return volume > 0 ? volume : nil
-                        }
-                    }()
-                    
-                    if let value = metricValue {
-                        LineMark(
-                            x: .value("Date", log.date),
-                            y: .value(selectedMetric.rawValue, value)
-                        )
-                        .foregroundStyle(by: .value("Exercise", log.exercise?.name ?? "Other"))
+            if selectedMetric == .strengthToWeight && latestWeight == nil {
+                Text("Body weight data not available from Apple Health.")
+                    .foregroundColor(.gray)
+                    .padding()
+                Spacer()
+            } else {
+                Chart {
+                    ForEach(filteredLogs) { log in
+                        let metricValue: Double? = {
+                            switch selectedMetric {
+                            case .maxWeight:
+                                return log.sets.map({ $0.weight }).max()
+                            case .totalReps:
+                                let reps = log.sets.map({ $0.reps }).reduce(0, +)
+                                return reps > 0 ? Double(reps) : nil
+                            case .totalSets:
+                                let setsCount = log.sets.count
+                                return setsCount > 0 ? Double(setsCount) : nil
+                            case .volume:
+                                let volume = log.sets.map({ $0.weight * Double($0.reps) }).reduce(0, +)
+                                return volume > 0 ? volume : nil
+                            case .strengthToWeight:
+                                guard let bw = latestWeight, bw > 0 else { return nil }
+                                if let maxWeight = log.sets.map({ $0.weight }).max(), maxWeight > 0 {
+                                    return maxWeight / bw
+                                }
+                                return nil
+                            }
+                        }()
                         
-                        PointMark(
-                            x: .value("Date", log.date),
-                            y: .value(selectedMetric.rawValue, value)
-                        )
-                        .foregroundStyle(by: .value("Exercise", log.exercise?.name ?? "Other"))
+                        if let value = metricValue {
+                            LineMark(
+                                x: .value("Date", log.date),
+                                y: .value(selectedMetric.rawValue, value)
+                            )
+                            .foregroundStyle(by: .value("Exercise", log.exercise?.name ?? "Other"))
+                            
+                            PointMark(
+                                x: .value("Date", log.date),
+                                y: .value(selectedMetric.rawValue, value)
+                            )
+                            .foregroundStyle(by: .value("Exercise", log.exercise?.name ?? "Other"))
+                        }
                     }
                 }
+                .frame(height: 300)
+                .padding()
+                
+                Spacer()
             }
-            .frame(height: 300)
-            .padding()
-            
-            Spacer()
         }
         .navigationTitle("Progress")
+        .onAppear {
+            if HealthKitManager.shared.isAuthorized {
+                HealthKitManager.shared.fetchLatestWeight { weight in
+                    self.latestWeight = weight
+                }
+            }
+        }
     }
     
     private var filteredLogs: [StrengthWorkoutLog] {

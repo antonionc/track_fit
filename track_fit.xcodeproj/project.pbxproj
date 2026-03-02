@@ -393,6 +393,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "TrackFit needs access to read your health data to improve fitness insights.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TrackFit needs access to save your workouts to Apple Health.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -410,8 +412,6 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Nacanare.track-fit";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "TrackFit needs access to read your health data to improve fitness insights.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TrackFit needs access to save your workouts to Apple Health.";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
@@ -432,6 +432,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "TrackFit needs access to read your health data to improve fitness insights.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TrackFit needs access to save your workouts to Apple Health.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -449,8 +451,6 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Nacanare.track-fit";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "TrackFit needs access to read your health data to improve fitness insights.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TrackFit needs access to save your workouts to Apple Health.";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
