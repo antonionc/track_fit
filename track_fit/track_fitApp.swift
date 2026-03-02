@@ -45,6 +45,9 @@ struct track_fitApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    HealthKitManager.shared.requestAuthorization()
+                }
         }
         .modelContainer(container)
     }

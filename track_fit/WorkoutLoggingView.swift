@@ -77,11 +77,28 @@ struct WorkoutLoggingView: View {
         let log = StrengthWorkoutLog(date: date, exercise: exercise)
         modelContext.insert(log)
         
+        var validSetsCount = 0
         for setInput in sets {
             if let weight = Double(setInput.weight), let reps = Int(setInput.reps) {
                 let setLog = StrengthSetLog(weight: weight, reps: reps)
                 log.sets.append(setLog)
+                validSetsCount += 1
             }
+        }
+        
+        // Save to HealthKit
+        if validSetsCount > 0 {
+            // Estimate duration: 2 minutes per set
+            let estimatedMinutes = validSetsCount * 2
+            let endDate = Calendar.current.date(byAdding: .minute, value: estimatedMinutes, to: date) ?? date
+            // Estimate energy: 5 calories per minute
+            let estimatedCalories = Double(estimatedMinutes * 5)
+            
+            HealthKitManager.shared.saveStrengthWorkout(
+                startDate: date,
+                endDate: endDate,
+                energyBurned: estimatedCalories
+            )
         }
         
         dismiss()

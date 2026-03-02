@@ -410,6 +410,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Nacanare.track-fit";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "TrackFit needs access to read your health data to improve fitness insights.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TrackFit needs access to save your workouts to Apple Health.";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
@@ -447,6 +449,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Nacanare.track-fit";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "TrackFit needs access to read your health data to improve fitness insights.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TrackFit needs access to save your workouts to Apple Health.";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
