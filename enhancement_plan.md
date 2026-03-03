@@ -34,3 +34,27 @@ This is where the Apple Watch integration becomes truly powerful by merging stre
 ## Phase 4: Modern iOS Experiences (Dynamic Island)
 
 - [ ] **Live Activities**: When a user is resting between sets, display a Live Activity on the iPhone Lock Screen and Dynamic Island showing the countdown timer and what the next exercise is. This allows users to stay engaged without keeping the app open.
+
+## Phase 5: Advanced Programming & Periodization
+
+To elevate TrackFit from a simple logging app to a comprehensive training planner, the app should support structured long-term progression.
+
+- [ ] **Periodization Framework**: Implement the ability to structure training into Macrocycles (long-term, e.g., 6-12 months), Mesocycles (phases of several weeks), and Microcycles (weekly plans).
+- [ ] **Periodization Models**: Allow users or coaches to select between linear periodization or daily undulating periodization to systematically manage volume and intensity and drive physical adaptations safely.
+- [ ] **Hybrid / Concurrent Training Support**: Expand tracking to accommodate "Hybrid Athletes" who balance traditional resistance training with endurance or cardiovascular conditioning. The app could analyze data to help users avoid the "interference effect" by optimizing the schedule and volume of both modalities.
+
+## Phase 6: Dynamic Scaling & Metcon Integration
+
+Strength training frequently overlaps with high-intensity functional training. Adding specific tools for these environments will vastly improve the app's utility.
+
+- [ ] **Intelligent Exercise Substitutions**: Build a dynamic scaling engine that suggests alternative movements based on equipment availability (e.g., Home Gym vs. Commercial Gym) or an athlete's skill level. For example, suggesting parallel-bar dips if a user lacks the skill for ring dips.
+- [ ] **Stimulus Preservation**: Ensure the app's substitution algorithm guides users to modify loads or volume in a way that preserves the originally intended physical stimulus of the workout rather than just avoiding difficulty.
+- [ ] **Cardio Conversions**: Include a quick-reference conversion engine for distance and calories (e.g., automatically converting a 400m run into a 500m row or 30/24 Assault Bike calories) depending on the available machines.
+- [ ] **Metcon Specific Timers**: Add dedicated timer modes for Metabolic Conditioning (Metcons), such as AMRAP (As Many Rounds As Possible), EMOM (Every Minute on the Minute), and rounds "For Time".
+
+## Phase 7: Holistic Recovery & Readiness
+
+Performance in strength and hybrid training relies heavily on what happens outside the gym.
+
+- [ ] **Readiness Scoring via HealthKit**: Leverage HealthKit data (such as Sleep duration and Heart Rate Variability) to assess central nervous system fatigue. The app could use this to suggest whether a user should push hard or take an active recovery day.
+- [ ] **Nutrition Tracking Integration**: Integrate TrackFit with HealthKit's nutrition tracking to correlate caloric intake and macronutrient timing with workout performance and volume, as energy intake is paramount for athletes balancing multiple fitness modalities.
