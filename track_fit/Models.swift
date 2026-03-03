@@ -19,6 +19,8 @@ final class StrengthExercise {
 final class StrengthWorkoutLog {
     var date: Date
     var exercise: StrengthExercise?
+    var averageHeartRate: Double?
+    var totalCaloriesBurned: Double?
     
     @Relationship(deleteRule: .cascade)
     var sets: [StrengthSetLog] = []

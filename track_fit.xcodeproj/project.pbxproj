@@ -518,6 +518,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "track_fit Watch App";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "TrackFit needs access to read your heart rate and active energy during workouts.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TrackFit uses HealthKit to save workout records when you finish a session on your Apple Watch.";
+				CODE_SIGN_ENTITLEMENTS = "track_fit Watch App Watch App/track_fit Watch App Watch App.entitlements";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "Nacanare.track-fit";
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
@@ -552,6 +555,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "track_fit Watch App";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "TrackFit needs access to read your heart rate and active energy during workouts.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TrackFit uses HealthKit to save workout records when you finish a session on your Apple Watch.";
+				CODE_SIGN_ENTITLEMENTS = "track_fit Watch App Watch App/track_fit Watch App Watch App.entitlements";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "Nacanare.track-fit";
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;

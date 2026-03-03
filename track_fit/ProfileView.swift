@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @State private var latestWeight: Double?
+    @ObservedObject private var healthManager = HealthKitManager.shared
     
     var body: some View {
         NavigationView {
@@ -55,17 +56,24 @@ struct ProfileView: View {
             .onAppear {
                 fetchHealthData()
             }
+            .onChange(of: healthManager.isAuthorized) { isAuthorized in
+                if isAuthorized {
+                    healthManager.fetchLatestWeight { weight in
+                        self.latestWeight = weight
+                    }
+                }
+            }
         }
     }
     
     private func fetchHealthData() {
-        if HealthKitManager.shared.isAuthorized {
-            HealthKitManager.shared.fetchLatestWeight { weight in
+        if healthManager.isAuthorized {
+            healthManager.fetchLatestWeight { weight in
                 self.latestWeight = weight
             }
         } else {
             // Re-request authorization if not authorized yet
-            HealthKitManager.shared.requestAuthorization()
+            healthManager.requestAuthorization()
         }
     }
 }

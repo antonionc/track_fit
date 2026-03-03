@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct track_fit_Watch_App_Watch_AppApp: App {
+    @StateObject private var healthManager = WatchHealthManager()
+    
     init() {
         _ = WatchSessionManager.shared
     }
@@ -16,6 +18,7 @@ struct track_fit_Watch_App_Watch_AppApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(healthManager)
         }
     }
 }

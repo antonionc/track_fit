@@ -13,6 +13,8 @@ struct ProgressChartView: View {
         case totalSets = "Total Sets"
         case volume = "Volume"
         case strengthToWeight = "Ratio (Max/BW)"
+        case averageHeartRate = "Avg HR"
+        case calories = "Calories"
         
         var id: String { rawValue }
     }
@@ -70,6 +72,10 @@ struct ProgressChartView: View {
                                     return maxWeight / bw
                                 }
                                 return nil
+                            case .averageHeartRate:
+                                return log.averageHeartRate
+                            case .calories:
+                                return log.totalCaloriesBurned
                             }
                         }()
                         

@@ -12,6 +12,7 @@ class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
     var onLogSetReceived: ((String, Double, Int) -> Void)?
     var onWorkoutStarted: (() -> Void)?
     var onWorkoutFinished: (() -> Void)?
+    var onWorkoutSummaryReceived: ((Double, Double) -> Void)?
     
     override init() {
         super.init()
@@ -72,6 +73,20 @@ class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
 
+    func sendWorkoutSummary(averageHeartRate: Double, totalCaloriesBurned: Double) {
+        guard WCSession.default.activationState == .activated else { return }
+        
+        let message: [String: Any] = [
+            "type": "workoutSummary",
+            "averageHeartRate": averageHeartRate,
+            "totalCaloriesBurned": totalCaloriesBurned
+        ]
+        
+        WCSession.default.sendMessage(message, replyHandler: nil) { error in
+            print("Failed to send workout summary: \(error.localizedDescription)")
+        }
+    }
+
     // MARK: - Receiving Messages
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
@@ -99,6 +114,11 @@ class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
                         self.activeExerciseName = nil
                         self.onWorkoutFinished?()
                     }
+                }
+            case "workoutSummary":
+                if let hr = message["averageHeartRate"] as? Double,
+                   let cal = message["totalCaloriesBurned"] as? Double {
+                    self.onWorkoutSummaryReceived?(hr, cal)
                 }
             default:
                 break

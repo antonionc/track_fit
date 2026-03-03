@@ -2,6 +2,8 @@ import SwiftUI
 import WatchKit
 
 struct WatchWorkoutActiveView: View {
+    @EnvironmentObject private var healthManager: WatchHealthManager
+    
     let exerciseName: String
     
     @State private var weight: Double = 20.0
@@ -10,6 +12,23 @@ struct WatchWorkoutActiveView: View {
     
     var body: some View {
         VStack(spacing: 8) {
+            if healthManager.isWorkoutActive {
+                HStack(spacing: 12) {
+                    HStack(spacing: 2) {
+                        Image(systemName: "heart.fill").foregroundColor(.red).font(.caption2)
+                        Text(String(format: "%.0f", healthManager.liveHeartRate))
+                            .font(.system(.footnote, design: .rounded).bold())
+                            .foregroundColor(.red)
+                    }
+                    HStack(spacing: 2) {
+                        Image(systemName: "flame.fill").foregroundColor(.orange).font(.caption2)
+                        Text(String(format: "%.0f", healthManager.activeEnergyBurned))
+                            .font(.system(.footnote, design: .rounded).bold())
+                            .foregroundColor(.orange)
+                    }
+                }
+            }
+            
             Text(exerciseName)
                 .font(.headline)
                 .lineLimit(1)

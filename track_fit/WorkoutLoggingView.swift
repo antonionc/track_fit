@@ -9,6 +9,8 @@ struct WorkoutLoggingView: View {
     @State private var selectedExercise: StrengthExercise?
     @State private var sets: [SetInput] = [SetInput(weight: "", reps: "")]
     @State private var date = Date()
+    @State private var watchAverageHeartRate: Double?
+    @State private var watchTotalCalories: Double?
     
     @StateObject private var watchSession = WatchSessionManager.shared
     
@@ -84,6 +86,11 @@ struct WorkoutLoggingView: View {
                     }
                 }
             }
+            
+            watchSession.onWorkoutSummaryReceived = { hr, cal in
+                self.watchAverageHeartRate = hr
+                self.watchTotalCalories = cal
+            }
         }
         .onDisappear {
             watchSession.sendWorkoutStatus(isStarted: false)
@@ -104,6 +111,8 @@ struct WorkoutLoggingView: View {
         guard let exercise = selectedExercise else { return }
         
         let log = StrengthWorkoutLog(date: date, exercise: exercise)
+        log.averageHeartRate = watchAverageHeartRate
+        log.totalCaloriesBurned = watchTotalCalories
         modelContext.insert(log)
         
         var validSetsCount = 0
@@ -115,8 +124,8 @@ struct WorkoutLoggingView: View {
             }
         }
         
-        // Save to HealthKit
-        if validSetsCount > 0 {
+        // Save to HealthKit only if not already handled by Watch
+        if validSetsCount > 0 && watchAverageHeartRate == nil {
             // Estimate duration: 2 minutes per set
             let estimatedMinutes = validSetsCount * 2
             let endDate = Calendar.current.date(byAdding: .minute, value: estimatedMinutes, to: date) ?? date
