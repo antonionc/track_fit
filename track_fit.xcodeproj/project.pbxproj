@@ -6,7 +6,32 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3D2E35632F562705007FF466 /* track_fit Watch App Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 3D2E35432F562703007FF466 /* track_fit Watch App Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		3D2E35502F562705007FF466 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3D4A00182E72D7A6001FEF4A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D2E35422F562703007FF466;
+			remoteInfo = "track_fit Watch App Watch App";
+		};
+		3D2E355A2F562705007FF466 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3D4A00182E72D7A6001FEF4A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D2E35422F562703007FF466;
+			remoteInfo = "track_fit Watch App Watch App";
+		};
+		3D2E35612F562705007FF466 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3D4A00182E72D7A6001FEF4A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D2E35422F562703007FF466;
+			remoteInfo = "track_fit Watch App Watch App";
+		};
 		3D4A00342E72D7A7001FEF4A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3D4A00182E72D7A6001FEF4A /* Project object */;
@@ -23,15 +48,60 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		3D2E35672F562705007FF466 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				3D2E35632F562705007FF466 /* track_fit Watch App Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		3D2E35432F562703007FF466 /* track_fit Watch App Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "track_fit Watch App Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D2E354F2F562705007FF466 /* track_fit Watch App Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "track_fit Watch App Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D2E35592F562705007FF466 /* track_fit Watch App Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "track_fit Watch App Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D4A00202E72D7A6001FEF4A /* track_fit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = track_fit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D4A00332E72D7A7001FEF4A /* track_fitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = track_fitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D4A003D2E72D7A7001FEF4A /* track_fitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = track_fitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3D2E35792F562E16007FF466 /* Exceptions for "track_fit" folder in "track_fit Watch App Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Shared/WatchSessionManager.swift,
+			);
+			target = 3D2E35422F562703007FF466 /* track_fit Watch App Watch App */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		3D2E35442F562703007FF466 /* track_fit Watch App Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "track_fit Watch App Watch App";
+			sourceTree = "<group>";
+		};
+		3D2E35522F562705007FF466 /* track_fit Watch App Watch AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "track_fit Watch App Watch AppTests";
+			sourceTree = "<group>";
+		};
+		3D2E355C2F562705007FF466 /* track_fit Watch App Watch AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "track_fit Watch App Watch AppUITests";
+			sourceTree = "<group>";
+		};
 		3D4A00222E72D7A6001FEF4A /* track_fit */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3D2E35792F562E16007FF466 /* Exceptions for "track_fit" folder in "track_fit Watch App Watch App" target */,
+			);
 			path = track_fit;
 			sourceTree = "<group>";
 		};
@@ -48,6 +118,27 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3D2E35402F562703007FF466 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3D2E354C2F562705007FF466 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3D2E35562F562705007FF466 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3D4A001D2E72D7A6001FEF4A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -78,6 +169,9 @@
 				3D4A00222E72D7A6001FEF4A /* track_fit */,
 				3D4A00362E72D7A7001FEF4A /* track_fitTests */,
 				3D4A00402E72D7A7001FEF4A /* track_fitUITests */,
+				3D2E35442F562703007FF466 /* track_fit Watch App Watch App */,
+				3D2E35522F562705007FF466 /* track_fit Watch App Watch AppTests */,
+				3D2E355C2F562705007FF466 /* track_fit Watch App Watch AppUITests */,
 				3D4A00212E72D7A6001FEF4A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +182,9 @@
 				3D4A00202E72D7A6001FEF4A /* track_fit.app */,
 				3D4A00332E72D7A7001FEF4A /* track_fitTests.xctest */,
 				3D4A003D2E72D7A7001FEF4A /* track_fitUITests.xctest */,
+				3D2E35432F562703007FF466 /* track_fit Watch App Watch App.app */,
+				3D2E354F2F562705007FF466 /* track_fit Watch App Watch AppTests.xctest */,
+				3D2E35592F562705007FF466 /* track_fit Watch App Watch AppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,6 +192,74 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3D2E35422F562703007FF466 /* track_fit Watch App Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D2E35642F562705007FF466 /* Build configuration list for PBXNativeTarget "track_fit Watch App Watch App" */;
+			buildPhases = (
+				3D2E353F2F562703007FF466 /* Sources */,
+				3D2E35402F562703007FF466 /* Frameworks */,
+				3D2E35412F562703007FF466 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3D2E35442F562703007FF466 /* track_fit Watch App Watch App */,
+			);
+			name = "track_fit Watch App Watch App";
+			packageProductDependencies = (
+			);
+			productName = "track_fit Watch App Watch App";
+			productReference = 3D2E35432F562703007FF466 /* track_fit Watch App Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3D2E354E2F562705007FF466 /* track_fit Watch App Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D2E35682F562705007FF466 /* Build configuration list for PBXNativeTarget "track_fit Watch App Watch AppTests" */;
+			buildPhases = (
+				3D2E354B2F562705007FF466 /* Sources */,
+				3D2E354C2F562705007FF466 /* Frameworks */,
+				3D2E354D2F562705007FF466 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3D2E35512F562705007FF466 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3D2E35522F562705007FF466 /* track_fit Watch App Watch AppTests */,
+			);
+			name = "track_fit Watch App Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "track_fit Watch App Watch AppTests";
+			productReference = 3D2E354F2F562705007FF466 /* track_fit Watch App Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3D2E35582F562705007FF466 /* track_fit Watch App Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D2E356B2F562705007FF466 /* Build configuration list for PBXNativeTarget "track_fit Watch App Watch AppUITests" */;
+			buildPhases = (
+				3D2E35552F562705007FF466 /* Sources */,
+				3D2E35562F562705007FF466 /* Frameworks */,
+				3D2E35572F562705007FF466 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3D2E355B2F562705007FF466 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3D2E355C2F562705007FF466 /* track_fit Watch App Watch AppUITests */,
+			);
+			name = "track_fit Watch App Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "track_fit Watch App Watch AppUITests";
+			productReference = 3D2E35592F562705007FF466 /* track_fit Watch App Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		3D4A001F2E72D7A6001FEF4A /* track_fit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3D4A00472E72D7A7001FEF4A /* Build configuration list for PBXNativeTarget "track_fit" */;
@@ -102,10 +267,12 @@
 				3D4A001C2E72D7A6001FEF4A /* Sources */,
 				3D4A001D2E72D7A6001FEF4A /* Frameworks */,
 				3D4A001E2E72D7A6001FEF4A /* Resources */,
+				3D2E35672F562705007FF466 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3D2E35622F562705007FF466 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				3D4A00222E72D7A6001FEF4A /* track_fit */,
@@ -170,9 +337,20 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1640;
+				LastSwiftUpdateCheck = 2630;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					3D2E35422F562703007FF466 = {
+						CreatedOnToolsVersion = 26.3;
+					};
+					3D2E354E2F562705007FF466 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = 3D2E35422F562703007FF466;
+					};
+					3D2E35582F562705007FF466 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = 3D2E35422F562703007FF466;
+					};
 					3D4A001F2E72D7A6001FEF4A = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -203,11 +381,35 @@
 				3D4A001F2E72D7A6001FEF4A /* track_fit */,
 				3D4A00322E72D7A7001FEF4A /* track_fitTests */,
 				3D4A003C2E72D7A7001FEF4A /* track_fitUITests */,
+				3D2E35422F562703007FF466 /* track_fit Watch App Watch App */,
+				3D2E354E2F562705007FF466 /* track_fit Watch App Watch AppTests */,
+				3D2E35582F562705007FF466 /* track_fit Watch App Watch AppUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3D2E35412F562703007FF466 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3D2E354D2F562705007FF466 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3D2E35572F562705007FF466 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3D4A001E2E72D7A6001FEF4A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -232,6 +434,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3D2E353F2F562703007FF466 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3D2E354B2F562705007FF466 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3D2E35552F562705007FF466 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3D4A001C2E72D7A6001FEF4A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -256,6 +479,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3D2E35512F562705007FF466 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3D2E35422F562703007FF466 /* track_fit Watch App Watch App */;
+			targetProxy = 3D2E35502F562705007FF466 /* PBXContainerItemProxy */;
+		};
+		3D2E355B2F562705007FF466 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3D2E35422F562703007FF466 /* track_fit Watch App Watch App */;
+			targetProxy = 3D2E355A2F562705007FF466 /* PBXContainerItemProxy */;
+		};
+		3D2E35622F562705007FF466 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3D2E35422F562703007FF466 /* track_fit Watch App Watch App */;
+			targetProxy = 3D2E35612F562705007FF466 /* PBXContainerItemProxy */;
+		};
 		3D4A00352E72D7A7001FEF4A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3D4A001F2E72D7A6001FEF4A /* track_fit */;
@@ -269,6 +507,167 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		3D2E35652F562705007FF466 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R7BXW5V4H2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "track_fit Watch App";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "Nacanare.track-fit";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Nacanare.track-fit.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		3D2E35662F562705007FF466 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R7BXW5V4H2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "track_fit Watch App";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "Nacanare.track-fit";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Nacanare.track-fit.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+		3D2E35692F562705007FF466 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R7BXW5V4H2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nacanare.track-fit-Watch-App-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/track_fit Watch App Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/track_fit Watch App Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		3D2E356A2F562705007FF466 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R7BXW5V4H2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nacanare.track-fit-Watch-App-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/track_fit Watch App Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/track_fit Watch App Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		3D2E356C2F562705007FF466 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R7BXW5V4H2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nacanare.track-fit-Watch-App-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "track_fit Watch App Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		3D2E356D2F562705007FF466 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R7BXW5V4H2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nacanare.track-fit-Watch-App-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "track_fit Watch App Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
 		3D4A00452E72D7A7001FEF4A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -391,6 +790,7 @@
 				CODE_SIGN_ENTITLEMENTS = track_fit/track_fit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R7BXW5V4H2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "TrackFit needs access to read your health data to improve fitness insights.";
@@ -430,6 +830,7 @@
 				CODE_SIGN_ENTITLEMENTS = track_fit/track_fit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R7BXW5V4H2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "TrackFit needs access to read your health data to improve fitness insights.";
@@ -550,6 +951,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3D2E35642F562705007FF466 /* Build configuration list for PBXNativeTarget "track_fit Watch App Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D2E35652F562705007FF466 /* Debug */,
+				3D2E35662F562705007FF466 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3D2E35682F562705007FF466 /* Build configuration list for PBXNativeTarget "track_fit Watch App Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D2E35692F562705007FF466 /* Debug */,
+				3D2E356A2F562705007FF466 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3D2E356B2F562705007FF466 /* Build configuration list for PBXNativeTarget "track_fit Watch App Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D2E356C2F562705007FF466 /* Debug */,
+				3D2E356D2F562705007FF466 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3D4A001B2E72D7A6001FEF4A /* Build configuration list for PBXProject "track_fit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

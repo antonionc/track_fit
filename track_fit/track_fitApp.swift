@@ -13,6 +13,7 @@ struct track_fitApp: App {
     let container: ModelContainer
 
     init() {
+        _ = WatchSessionManager.shared
         do {
             container = try ModelContainer(for: StrengthExercise.self, StrengthWorkoutLog.self, StrengthSetLog.self)
             

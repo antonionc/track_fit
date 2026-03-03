@@ -10,6 +10,8 @@ struct WorkoutLoggingView: View {
     @State private var sets: [SetInput] = [SetInput(weight: "", reps: "")]
     @State private var date = Date()
     
+    @StateObject private var watchSession = WatchSessionManager.shared
+    
     struct SetInput: Identifiable {
         let id = UUID()
         var weight: String
@@ -31,6 +33,11 @@ struct WorkoutLoggingView: View {
                         }
                     }
                     .pickerStyle(.menu)
+                    .onChange(of: selectedExercise) { newValue in
+                        if let name = newValue?.name {
+                            watchSession.sendActiveExercise(name)
+                        }
+                    }
                 }
                 DatePicker("Date", selection: $date, displayedComponents: .date)
             }
@@ -59,6 +66,28 @@ struct WorkoutLoggingView: View {
                 }
                 .disabled(selectedExercise == nil || sets.isEmpty)
             }
+        }
+        .onAppear {
+            watchSession.sendWorkoutStatus(isStarted: true)
+            if let name = selectedExercise?.name {
+                watchSession.sendActiveExercise(name)
+            }
+            
+            watchSession.onLogSetReceived = { exerciseName, weight, reps in
+                // Only append if it matches the current exercise
+                if self.selectedExercise?.name == exerciseName {
+                    // Replace empty initial row
+                    if self.sets.count == 1 && self.sets[0].weight.isEmpty && self.sets[0].reps.isEmpty {
+                        self.sets[0] = SetInput(weight: String(weight), reps: String(reps))
+                    } else {
+                        self.sets.append(SetInput(weight: String(weight), reps: String(reps)))
+                    }
+                }
+            }
+        }
+        .onDisappear {
+            watchSession.sendWorkoutStatus(isStarted: false)
+            watchSession.onLogSetReceived = nil
         }
     }
     
