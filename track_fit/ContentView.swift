@@ -109,7 +109,10 @@ struct DashboardView: View {
                     .cornerRadius(12)
             } else {
                 ForEach(workoutLogs.prefix(5)) { log in
-                    WorkoutRow(log: log)
+                    NavigationLink(destination: WorkoutDetailView(workout: log)) {
+                        WorkoutRow(log: log)
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
         }
