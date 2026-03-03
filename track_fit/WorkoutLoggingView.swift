@@ -84,6 +84,11 @@ struct WorkoutLoggingView: View {
                     } else {
                         self.sets.append(SetInput(weight: String(weight), reps: String(reps)))
                     }
+                    
+                    // Start Live Activity for Rest Timer (assuming 60s for now, syncing with watch timer)
+                    let nextSet = self.sets.count + 1
+                    let endDate = Calendar.current.date(byAdding: .second, value: 60, to: Date()) ?? Date()
+                    LiveActivityManager.shared.startActivity(exerciseName: exerciseName, endDate: endDate, nextSetNumber: nextSet)
                 }
             }
             
@@ -95,6 +100,7 @@ struct WorkoutLoggingView: View {
         .onDisappear {
             watchSession.sendWorkoutStatus(isStarted: false)
             watchSession.onLogSetReceived = nil
+            LiveActivityManager.shared.endActivity()
         }
     }
     
@@ -108,6 +114,7 @@ struct WorkoutLoggingView: View {
     }
     
     private func saveWorkout() {
+        LiveActivityManager.shared.endActivity()
         guard let exercise = selectedExercise else { return }
         
         let log = StrengthWorkoutLog(date: date, exercise: exercise)
