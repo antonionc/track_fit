@@ -43,8 +43,8 @@ A planned session will allow users to define a sequence of exercises, sets, and 
 - [x] **Sync Plans to Watch**: Send the planned workouts to the Apple Watch via `WatchSessionManager`.
 - [x] **Guided Workout Flow (watchOS)**: Update the Watch app to support a "Start Plan" mode. This mode acts as a state machine: Exercise (logging) -> Rest (timer) -> Next Set / Next Exercise.
 - [x] **Haptic Progression**: Use distinct haptics to signal the end of a rest timer and prompt the start of the next planned set/exercise. Allow the user to proceed with a simple screen tap.
-- [ ] **Improved Planned Workout UI (iOS)**: Add a Rest time between exercises.
-- [ ] **Improved Pkanned workout (watch)**: Record the number of repetitions achieved in each exercise (if different from planned reps)
+- [x] **Improved Planned Workout UI (iOS)**: Add a Rest time between exercises.
+- [x] **Improved Pkanned workout (watch)**: Record the number of repetitions achieved in each exercise (if different from planned reps)
 
 ## Phase 5: Advanced Programming & Periodization
 

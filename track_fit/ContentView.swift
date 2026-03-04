@@ -101,9 +101,19 @@ struct DashboardView: View {
     
     private var recentWorkoutsSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Recent Workouts")
-                .font(.headline)
-                .foregroundColor(.white)
+            HStack {
+                Text("Recent Workouts")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                NavigationLink(destination: WorkoutHistoryView()) {
+                    Text("See All")
+                        .font(.subheadline)
+                        .foregroundColor(.blue)
+                }
+            }
             
             if workoutLogs.isEmpty {
                 Text("No workouts recorded yet.")
