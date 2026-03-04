@@ -7,8 +7,12 @@ class LiveActivityManager {
     private var currentActivity: Activity<RestTimerAttributes>?
     
     func startActivity(exerciseName: String, endDate: Date, nextSetNumber: Int) {
+        print("LiveActivityManager: Attempting to start activity for \(exerciseName)")
         // Ensure Live Activities are supported and enabled
-        guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else { 
+            print("LiveActivityManager: Activities are NOT enabled!")
+            return 
+        }
         
         // If there's an existing activity, end it before starting a new one
         endActivity()

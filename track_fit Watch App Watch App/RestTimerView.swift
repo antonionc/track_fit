@@ -5,11 +5,14 @@ struct RestTimerView: View {
     @Environment(\.dismiss) private var dismiss
     
     let durationSeconds: Int
+    let onDone: (() -> Void)?
+    
     @State private var timeRemaining: Int
     @State private var timer: Timer?
     
-    init(durationSeconds: Int) {
+    init(durationSeconds: Int, onDone: (() -> Void)? = nil) {
         self.durationSeconds = durationSeconds
+        self.onDone = onDone
         _timeRemaining = State(initialValue: durationSeconds)
     }
     
@@ -26,9 +29,13 @@ struct RestTimerView: View {
             
             Button(action: {
                 timer?.invalidate()
-                dismiss()
+                if let onDone = onDone {
+                    onDone()
+                } else {
+                    dismiss()
+                }
             }) {
-                Text(timeRemaining == 0 ? "Done" : "Skip")
+                Text(timeRemaining == 0 ? (onDone != nil ? "Next Set" : "Done") : "Skip")
             }
             .tint(timeRemaining == 0 ? .green : .gray)
             .padding(.top)

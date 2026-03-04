@@ -2,17 +2,35 @@ import Foundation
 import WatchConnectivity
 import Combine
 
+struct PlannedWorkoutTransfer: Codable, Identifiable {
+    var id: String
+    var name: String
+    var exercises: [PlannedExerciseTransfer]
+}
+
+struct PlannedExerciseTransfer: Codable {
+    var exerciseName: String
+    var targetSets: Int
+    var targetReps: String
+    var restDurationSeconds: Int
+    var order: Int
+}
+
 class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
     static let shared = WatchSessionManager()
     
     @Published var activeExerciseName: String?
     @Published var activeWorkoutStartDate: Date?
+    @Published var plans: [PlannedWorkoutTransfer] = []
     
-    // Add closure properties to handle events in the views/models
-    var onLogSetReceived: ((String, Double, Int) -> Void)?
-    var onWorkoutStarted: (() -> Void)?
-    var onWorkoutFinished: (() -> Void)?
-    var onWorkoutSummaryReceived: ((Double, Double) -> Void)?
+    // Broadcast events via Combine instead of single closures so multiple listeners can react
+    let setLoggedPublisher = PassthroughSubject<(String, Double, Int), Never>()
+    let workoutStartedPublisher = PassthroughSubject<Void, Never>()
+    let workoutFinishedPublisher = PassthroughSubject<Void, Never>()
+    let workoutSummaryPublisher = PassthroughSubject<(Double, Double), Never>()
+    
+    // Legacy closures for existing simple UI listeners
+    var onPlansReceived: (([PlannedWorkoutTransfer]) -> Void)?
     
     override init() {
         super.init()
@@ -20,6 +38,12 @@ class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
             let session = WCSession.default
             session.delegate = self
             session.activate()
+            
+            if let data = session.receivedApplicationContext["plansData"] as? Data {
+                if let decodedPlans = try? JSONDecoder().decode([PlannedWorkoutTransfer].self, from: data) {
+                    self.plans = decodedPlans
+                }
+            }
         }
     }
     
@@ -86,6 +110,23 @@ class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
             print("Failed to send workout summary: \(error.localizedDescription)")
         }
     }
+    
+    func sendPlans(_ plans: [PlannedWorkoutTransfer]) {
+        guard WCSession.default.activationState == .activated else { return }
+        
+        if let data = try? JSONEncoder().encode(plans) {
+            let context: [String: Any] = [
+                "type": "syncPlans",
+                "plansData": data
+            ]
+            
+            try? WCSession.default.updateApplicationContext(context)
+            
+            WCSession.default.sendMessage(context, replyHandler: nil) { error in
+                print("Failed to send plans: \(error.localizedDescription)")
+            }
+        }
+    }
 
     // MARK: - Receiving Messages
     
@@ -102,26 +143,44 @@ class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
                 if let name = message["exerciseName"] as? String,
                    let weight = message["weight"] as? Double,
                    let reps = message["reps"] as? Int {
-                    self.onLogSetReceived?(name, weight, reps)
+                    self.setLoggedPublisher.send((name, weight, reps))
                 }
             case "workoutStatus":
                 if let isStarted = message["isStarted"] as? Bool {
                     if isStarted {
                         self.activeWorkoutStartDate = Date()
-                        self.onWorkoutStarted?()
+                        self.workoutStartedPublisher.send(())
                     } else {
                         self.activeWorkoutStartDate = nil
                         self.activeExerciseName = nil
-                        self.onWorkoutFinished?()
+                        self.workoutFinishedPublisher.send(())
                     }
                 }
             case "workoutSummary":
                 if let hr = message["averageHeartRate"] as? Double,
                    let cal = message["totalCaloriesBurned"] as? Double {
-                    self.onWorkoutSummaryReceived?(hr, cal)
+                    self.workoutSummaryPublisher.send((hr, cal))
+                }
+            case "syncPlans":
+                if let data = message["plansData"] as? Data {
+                    if let decodedPlans = try? JSONDecoder().decode([PlannedWorkoutTransfer].self, from: data) {
+                        self.plans = decodedPlans
+                        self.onPlansReceived?(decodedPlans)
+                    }
                 }
             default:
                 break
+            }
+        }
+    }
+    
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        DispatchQueue.main.async {
+            if let data = applicationContext["plansData"] as? Data {
+                if let decodedPlans = try? JSONDecoder().decode([PlannedWorkoutTransfer].self, from: data) {
+                    self.plans = decodedPlans
+                    self.onPlansReceived?(decodedPlans)
+                }
             }
         }
     }

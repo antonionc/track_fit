@@ -9,14 +9,7 @@ import ActivityKit
 import WidgetKit
 import SwiftUI
 
-struct RestTimerAttributes: ActivityAttributes {
-    public struct ContentState: Codable, Hashable {
-        var endDate: Date
-        var nextSetNumber: Int
-    }
 
-    var exerciseName: String
-}
 
 struct TrackFitWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {

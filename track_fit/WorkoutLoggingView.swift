@@ -74,32 +74,29 @@ struct WorkoutLoggingView: View {
             if let name = selectedExercise?.name {
                 watchSession.sendActiveExercise(name)
             }
-            
-            watchSession.onLogSetReceived = { exerciseName, weight, reps in
-                // Only append if it matches the current exercise
-                if self.selectedExercise?.name == exerciseName {
-                    // Replace empty initial row
-                    if self.sets.count == 1 && self.sets[0].weight.isEmpty && self.sets[0].reps.isEmpty {
-                        self.sets[0] = SetInput(weight: String(weight), reps: String(reps))
-                    } else {
-                        self.sets.append(SetInput(weight: String(weight), reps: String(reps)))
-                    }
-                    
-                    // Start Live Activity for Rest Timer (assuming 60s for now, syncing with watch timer)
-                    let nextSet = self.sets.count + 1
-                    let endDate = Calendar.current.date(byAdding: .second, value: 60, to: Date()) ?? Date()
-                    LiveActivityManager.shared.startActivity(exerciseName: exerciseName, endDate: endDate, nextSetNumber: nextSet)
+        }
+        .onReceive(watchSession.setLoggedPublisher) { (exerciseName, weight, reps) in
+            // Only append if it matches the current exercise
+            if self.selectedExercise?.name == exerciseName {
+                // Replace empty initial row
+                if self.sets.count == 1 && self.sets[0].weight.isEmpty && self.sets[0].reps.isEmpty {
+                    self.sets[0] = SetInput(weight: String(weight), reps: String(reps))
+                } else {
+                    self.sets.append(SetInput(weight: String(weight), reps: String(reps)))
                 }
+                
+                // Start Live Activity for Rest Timer (assuming 60s for now, syncing with watch timer)
+                let nextSet = self.sets.count + 1
+                let endDate = Calendar.current.date(byAdding: .second, value: 60, to: Date()) ?? Date()
+                LiveActivityManager.shared.startActivity(exerciseName: exerciseName, endDate: endDate, nextSetNumber: nextSet)
             }
-            
-            watchSession.onWorkoutSummaryReceived = { hr, cal in
-                self.watchAverageHeartRate = hr
-                self.watchTotalCalories = cal
-            }
+        }
+        .onReceive(watchSession.workoutSummaryPublisher) { hr, cal in
+            self.watchAverageHeartRate = hr
+            self.watchTotalCalories = cal
         }
         .onDisappear {
             watchSession.sendWorkoutStatus(isStarted: false)
-            watchSession.onLogSetReceived = nil
             LiveActivityManager.shared.endActivity()
         }
     }
@@ -107,6 +104,13 @@ struct WorkoutLoggingView: View {
     private func addSet() {
         let lastSet = sets.last
         sets.append(SetInput(weight: lastSet?.weight ?? "", reps: lastSet?.reps ?? ""))
+        
+        // Start Live Activity for Rest Timer from iOS
+        if let exerciseName = selectedExercise?.name {
+            let nextSet = sets.count + 1
+            let endDate = Calendar.current.date(byAdding: .second, value: 60, to: Date()) ?? Date()
+            LiveActivityManager.shared.startActivity(exerciseName: exerciseName, endDate: endDate, nextSetNumber: nextSet)
+        }
     }
     
     private func deleteSets(at offsets: IndexSet) {

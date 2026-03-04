@@ -16,6 +16,11 @@ struct ContentView: View {
                     Label("Dashboard", systemImage: "house.fill")
                 }
             
+            PlansListView()
+                .tabItem {
+                    Label("Plans", systemImage: "list.clipboard.fill")
+                }
+            
             ProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle")

@@ -35,6 +35,15 @@ This is where the Apple Watch integration becomes truly powerful by merging stre
 
 - [ ] **Live Activities**: When a user is resting between sets, display a Live Activity on the iPhone Lock Screen and Dynamic Island showing the countdown timer and what the next exercise is. This allows users to stay engaged without keeping the app open.
 
+## Phase 4.5: Planned Workout Sessions (Guided Training)
+
+A planned session will allow users to define a sequence of exercises, sets, and rests on the iPhone, then execute them seamlessly on the Watch via haptic guidance.
+
+- [ ] **Workout Planner (iOS)**: Build an interface to create a `PlannedWorkout` consisting of multiple `PlannedExercise` items (target sets, reps, weight, and rest durations).
+- [ ] **Sync Plans to Watch**: Send the planned workouts to the Apple Watch via `WatchSessionManager`.
+- [ ] **Guided Workout Flow (watchOS)**: Update the Watch app to support a "Start Plan" mode. This mode acts as a state machine: Exercise (logging) -> Rest (timer) -> Next Set / Next Exercise.
+- [ ] **Haptic Progression**: Use distinct haptics to signal the end of a rest timer and prompt the start of the next planned set/exercise. Allow the user to proceed with a simple screen tap.
+
 ## Phase 5: Advanced Programming & Periodization
 
 To elevate TrackFit from a simple logging app to a comprehensive training planner, the app should support structured long-term progression.

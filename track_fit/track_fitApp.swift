@@ -11,11 +11,13 @@ import SwiftData
 @main
 struct track_fitApp: App {
     let container: ModelContainer
+    let globalReceiver: GlobalWorkoutReceiver
 
     init() {
         _ = WatchSessionManager.shared
         do {
-            container = try ModelContainer(for: StrengthExercise.self, StrengthWorkoutLog.self, StrengthSetLog.self)
+            container = try ModelContainer(for: StrengthExercise.self, StrengthWorkoutLog.self, StrengthSetLog.self, PlannedWorkout.self, PlannedExerciseItem.self)
+            globalReceiver = GlobalWorkoutReceiver(context: container.mainContext)
             
             // Check if there are any exercises
             let descriptor = FetchDescriptor<StrengthExercise>()

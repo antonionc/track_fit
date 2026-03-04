@@ -43,3 +43,34 @@ final class StrengthSetLog {
         self.timestamp = timestamp
     }
 }
+
+// MARK: - Phase 4.5 Planned Workouts
+
+@Model
+final class PlannedWorkout {
+    var name: String
+    
+    @Relationship(deleteRule: .cascade)
+    var exercises: [PlannedExerciseItem] = []
+    
+    init(name: String) {
+        self.name = name
+    }
+}
+
+@Model
+final class PlannedExerciseItem {
+    var exercise: StrengthExercise?
+    var targetSets: Int
+    var targetReps: String
+    var restDurationSeconds: Int
+    var order: Int
+    
+    init(exercise: StrengthExercise? = nil, targetSets: Int, targetReps: String, restDurationSeconds: Int, order: Int) {
+        self.exercise = exercise
+        self.targetSets = targetSets
+        self.targetReps = targetReps
+        self.restDurationSeconds = restDurationSeconds
+        self.order = order
+    }
+}

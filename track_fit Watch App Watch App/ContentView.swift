@@ -81,6 +81,12 @@ struct ContentView: View {
                         Text("Ready to Track")
                             .font(.headline)
                         
+                        NavigationLink(destination: PlanSelectionView()) {
+                            Text("Guided Plans")
+                                .bold()
+                        }
+                        .tint(.orange)
+                        
                         if healthManager.isAuthorized {
                             Button(action: {
                                 healthManager.startWorkout()
