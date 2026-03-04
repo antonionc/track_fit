@@ -63,6 +63,7 @@ struct PlansListView: View {
                         targetSets: item.targetSets,
                         targetReps: item.targetReps,
                         restDurationSeconds: item.restDurationSeconds,
+                        restAfterExerciseSeconds: item.restAfterExerciseSeconds,
                         order: item.order
                     )
                 }
@@ -92,8 +93,12 @@ struct PlanDetailView: View {
                     HStack {
                         Text("\(item.targetSets) sets x \(item.targetReps)")
                         Spacer()
-                        Text("Rest: \(item.restDurationSeconds)s")
-                            .foregroundColor(.secondary)
+                        VStack(alignment: .trailing) {
+                            Text("Rest: \(item.restDurationSeconds)s")
+                            Text("Next Ex: \(item.restAfterExerciseSeconds)s")
+                                .font(.caption2)
+                        }
+                        .foregroundColor(.secondary)
                     }
                     .font(.subheadline)
                 }

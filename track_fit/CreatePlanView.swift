@@ -15,6 +15,7 @@ struct CreatePlanView: View {
         var targetSets: Int = 3
         var targetReps: String = "8-10"
         var restDuration: Int = 90
+        var restAfterExercise: Int = 120
     }
     
     var body: some View {
@@ -43,6 +44,7 @@ struct CreatePlanView: View {
                             }
                             
                             Stepper("Rest between sets: \(item.restDuration)s", value: $item.restDuration, in: 0...300, step: 15)
+                            Stepper("Rest after exercise: \(item.restAfterExercise)s", value: $item.restAfterExercise, in: 0...600, step: 15)
                         }
                         .padding(.vertical, 5)
                     }
@@ -89,6 +91,7 @@ struct CreatePlanView: View {
                     targetSets: input.targetSets,
                     targetReps: input.targetReps,
                     restDurationSeconds: input.restDuration,
+                    restAfterExerciseSeconds: input.restAfterExercise,
                     order: index
                 )
                 modelContext.insert(item)

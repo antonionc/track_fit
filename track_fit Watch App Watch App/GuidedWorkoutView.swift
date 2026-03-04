@@ -9,6 +9,7 @@ struct GuidedWorkoutView: View {
     @State private var currentSetIndex = 1
     @State private var isResting = false
     @State private var weight: Double = 0.0
+    @State private var reps: Int?
     
     // Sort exercises by order
     private var exercises: [PlannedExerciseTransfer] {
@@ -25,7 +26,8 @@ struct GuidedWorkoutView: View {
             if let exercise = currentExercise {
                 if isResting {
                     // Show rest timer sheet or view
-                    RestTimerView(durationSeconds: exercise.restDurationSeconds, onDone: finishRest)
+                    let restTime = (currentSetIndex == exercise.targetSets) ? exercise.restAfterExerciseSeconds : exercise.restDurationSeconds
+                    RestTimerView(durationSeconds: restTime, onDone: finishRest)
                 } else {
                     activeExerciseView(exercise: exercise)
                 }
@@ -63,24 +65,64 @@ struct GuidedWorkoutView: View {
             Spacer()
             
             HStack {
-                Button(action: { weight = max(0, weight - 2.5) }) {
-                    Image(systemName: "minus")
+                VStack {
+                    Text("Weight")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                    HStack(spacing: 2) {
+                        Button(action: { if weight > 2.5 { weight -= 2.5 }}) {
+                            Image(systemName: "minus.square.fill")
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .foregroundColor(.blue)
+                        
+                        Text(String(format: "%.1f", weight))
+                            .font(.system(.title3, design: .rounded).bold())
+                            .frame(minWidth: 40)
+                        
+                        Button(action: { weight += 2.5 }) {
+                            Image(systemName: "plus.square.fill")
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .foregroundColor(.blue)
+                    }
                 }
-                .frame(width: 40)
                 
-                Text(String(format: "%.1f kg", weight))
-                    .font(.system(.title3, design: .rounded).bold())
-                    .frame(maxWidth: .infinity)
+                Spacer()
                 
-                Button(action: { weight += 2.5 }) {
-                    Image(systemName: "plus")
+                VStack {
+                    Text("Reps")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                    HStack(spacing: 2) {
+                        Button(action: { 
+                            let r = reps ?? Int(exercise.targetReps.split(separator: "-").last ?? "0") ?? 0
+                            reps = max(1, r - 1)
+                        }) {
+                            Image(systemName: "minus.square.fill")
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .foregroundColor(.green)
+                        
+                        Text("\(reps ?? Int(exercise.targetReps.split(separator: "-").last ?? "0") ?? 0)")
+                            .font(.system(.title3, design: .rounded).bold())
+                            .frame(minWidth: 30)
+                        
+                        Button(action: { 
+                            let r = reps ?? Int(exercise.targetReps.split(separator: "-").last ?? "0") ?? 0
+                            reps = r + 1
+                        }) {
+                            Image(systemName: "plus.square.fill")
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .foregroundColor(.green)
+                    }
                 }
-                .frame(width: 40)
             }
             .padding(.bottom)
             
             Button(action: logSet) {
-                Text("Log & Rest")
+                Text(currentSetIndex == exercise.targetSets && currentExerciseIndex == exercises.count - 1 ? "Finish Workout" : "Log & Rest")
                     .bold()
             }
             .buttonStyle(.borderedProminent)
@@ -92,14 +134,19 @@ struct GuidedWorkoutView: View {
     private func logSet() {
         guard let exercise = currentExercise else { return }
         
-        // Use WatchSessionManager to send the logged set
+        let actualReps = reps ?? Int(exercise.targetReps.split(separator: "-").last ?? "0") ?? 0
         WatchSessionManager.shared.sendLogSet(
             exerciseName: exercise.exerciseName,
             weight: weight,
-            reps: Int(exercise.targetReps.split(separator: "-").last ?? "0") ?? 0 // simple parse for target
+            reps: actualReps
         )
         
-        isResting = true
+        if currentSetIndex == exercise.targetSets && currentExerciseIndex == exercises.count - 1 {
+            // Workout complete! No rest needed.
+            currentExerciseIndex += 1
+        } else {
+            isResting = true
+        }
     }
     
     private func finishRest() {
@@ -114,6 +161,7 @@ struct GuidedWorkoutView: View {
             currentSetIndex = 1
             weight = 0.0 // reset default weight or keep previous
         }
+        reps = nil
     }
 }
 

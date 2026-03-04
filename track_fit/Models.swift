@@ -64,13 +64,15 @@ final class PlannedExerciseItem {
     var targetSets: Int
     var targetReps: String
     var restDurationSeconds: Int
+    var restAfterExerciseSeconds: Int = 120
     var order: Int
     
-    init(exercise: StrengthExercise? = nil, targetSets: Int, targetReps: String, restDurationSeconds: Int, order: Int) {
+    init(exercise: StrengthExercise? = nil, targetSets: Int, targetReps: String, restDurationSeconds: Int, restAfterExerciseSeconds: Int = 120, order: Int) {
         self.exercise = exercise
         self.targetSets = targetSets
         self.targetReps = targetReps
         self.restDurationSeconds = restDurationSeconds
+        self.restAfterExerciseSeconds = restAfterExerciseSeconds
         self.order = order
     }
 }

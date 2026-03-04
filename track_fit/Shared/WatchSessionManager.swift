@@ -13,6 +13,7 @@ struct PlannedExerciseTransfer: Codable {
     var targetSets: Int
     var targetReps: String
     var restDurationSeconds: Int
+    var restAfterExerciseSeconds: Int
     var order: Int
 }
 
