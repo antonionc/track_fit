@@ -4,35 +4,54 @@ import ActivityKit
 class LiveActivityManager {
     static let shared = LiveActivityManager()
     
-    private var currentActivity: Activity<RestTimerAttributes>?
+    private var currentActivity: Activity<WorkoutPlanAttributes>?
     
-    func startActivity(exerciseName: String, endDate: Date, nextSetNumber: Int) {
-        print("LiveActivityManager: Attempting to start activity for \(exerciseName)")
-        // Ensure Live Activities are supported and enabled
+    func startPlanActivity(planName: String, firstExerciseName: String, totalSets: Int) {
+        print("LiveActivityManager: Attempting to start plan activity for \(planName)")
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { 
             print("LiveActivityManager: Activities are NOT enabled!")
             return 
         }
         
-        // If there's an existing activity, end it before starting a new one
         endActivity()
         
-        let attributes = RestTimerAttributes(exerciseName: exerciseName)
-        let contentState = RestTimerAttributes.ContentState(
-            endDate: endDate,
-            nextSetNumber: nextSetNumber
+        let attributes = WorkoutPlanAttributes(planName: planName)
+        let contentState = WorkoutPlanAttributes.ContentState(
+            currentExerciseName: firstExerciseName,
+            currentSet: 1,
+            totalSets: totalSets,
+            isResting: false,
+            restEndDate: nil
         )
         let activityContent = ActivityContent(state: contentState, staleDate: nil)
         
         do {
-            currentActivity = try Activity<RestTimerAttributes>.request(
+            currentActivity = try Activity<WorkoutPlanAttributes>.request(
                 attributes: attributes,
                 content: activityContent,
                 pushType: nil
             )
-            print("Started Live Activity for \(exerciseName)")
+            print("Started Live Activity for Plan \(planName)")
         } catch {
             print("Failed to start Live Activity: \(error.localizedDescription)")
+        }
+    }
+    
+    func updatePlanActivity(currentExerciseName: String, currentSet: Int, totalSets: Int, isResting: Bool, restEndDate: Date?) {
+        guard let activity = currentActivity else { return }
+        
+        Task {
+            let updatedState = WorkoutPlanAttributes.ContentState(
+                currentExerciseName: currentExerciseName,
+                currentSet: currentSet,
+                totalSets: totalSets,
+                isResting: isResting,
+                restEndDate: restEndDate
+            )
+            let updatedContent = ActivityContent(state: updatedState, staleDate: nil)
+            
+            await activity.update(updatedContent)
+            print("Updated Live Activity for \(currentExerciseName)")
         }
     }
     
@@ -40,10 +59,7 @@ class LiveActivityManager {
         guard let activity = currentActivity else { return }
         
         Task {
-            let finalState = RestTimerAttributes.ContentState(
-                endDate: Date(),
-                nextSetNumber: activity.content.state.nextSetNumber
-            )
+            let finalState = activity.content.state
             let finalContent = ActivityContent(state: finalState, staleDate: nil)
             await activity.end(finalContent, dismissalPolicy: .immediate)
             self.currentActivity = nil

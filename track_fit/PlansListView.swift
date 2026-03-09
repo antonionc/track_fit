@@ -83,28 +83,46 @@ struct PlansListView: View {
 
 struct PlanDetailView: View {
     var plan: PlannedWorkout
+    @State private var isWorkoutActive = false
     
     var body: some View {
-        List {
-            ForEach(plan.exercises.sorted(by: { $0.order < $1.order })) { item in
-                VStack(alignment: .leading) {
-                    Text(item.exercise?.name ?? "Unknown Exercise")
-                        .font(.headline)
-                    HStack {
-                        Text("\(item.targetSets) sets x \(item.targetReps)")
-                        Spacer()
-                        VStack(alignment: .trailing) {
-                            Text("Rest: \(item.restDurationSeconds)s")
-                            Text("Next Ex: \(item.restAfterExerciseSeconds)s")
-                                .font(.caption2)
+        VStack {
+            List {
+                ForEach(plan.exercises.sorted(by: { $0.order < $1.order })) { item in
+                    VStack(alignment: .leading) {
+                        Text(item.exercise?.name ?? "Unknown Exercise")
+                            .font(.headline)
+                        HStack {
+                            Text("\(item.targetSets) sets x \(item.targetReps)")
+                            Spacer()
+                            VStack(alignment: .trailing) {
+                                Text("Rest: \(item.restDurationSeconds)s")
+                                Text("Next Ex: \(item.restAfterExerciseSeconds)s")
+                                    .font(.caption2)
+                            }
+                            .foregroundColor(.secondary)
                         }
-                        .foregroundColor(.secondary)
+                        .font(.subheadline)
                     }
-                    .font(.subheadline)
                 }
             }
+            
+            Button(action: { isWorkoutActive = true }) {
+                Text("Start Workout")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.blue)
+            .padding()
         }
         .navigationTitle(plan.name)
+        .fullScreenCover(isPresented: $isWorkoutActive) {
+            NavigationStack {
+                ActivePlanWorkoutView(plan: plan)
+            }
+        }
     }
 }
 

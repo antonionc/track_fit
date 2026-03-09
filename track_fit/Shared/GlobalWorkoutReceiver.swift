@@ -16,6 +16,37 @@ class GlobalWorkoutReceiver {
                 self?.handleLoggedSet(exerciseName: exerciseName, weight: weight, reps: reps)
             }
             .store(in: &cancellables)
+            
+        WatchSessionManager.shared.planStartedPublisher
+            .receive(on: RunLoop.main)
+            .sink { (planName, firstExerciseName, totalSets) in
+                LiveActivityManager.shared.startPlanActivity(
+                    planName: planName,
+                    firstExerciseName: firstExerciseName,
+                    totalSets: totalSets
+                )
+            }
+            .store(in: &cancellables)
+            
+        WatchSessionManager.shared.planUpdatedPublisher
+            .receive(on: RunLoop.main)
+            .sink { (currentExerciseName, currentSet, totalSets, isResting, restEndDate) in
+                LiveActivityManager.shared.updatePlanActivity(
+                    currentExerciseName: currentExerciseName,
+                    currentSet: currentSet,
+                    totalSets: totalSets,
+                    isResting: isResting,
+                    restEndDate: restEndDate
+                )
+            }
+            .store(in: &cancellables)
+            
+        WatchSessionManager.shared.planEndedPublisher
+            .receive(on: RunLoop.main)
+            .sink { _ in
+                LiveActivityManager.shared.endActivity()
+            }
+            .store(in: &cancellables)
     }
     
     private func handleLoggedSet(exerciseName: String, weight: Double, reps: Int) {

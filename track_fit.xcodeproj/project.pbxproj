@@ -106,7 +106,7 @@
 		3D2785ED2F575686002FD92E /* Exceptions for "track_fit" folder in "TrackFitWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Shared/RestTimerAttributes.swift,
+				Shared/WorkoutPlanAttributes.swift,
 			);
 			target = 3D2785CB2F5754A1002FD92E /* TrackFitWidgetExtension */;
 		};

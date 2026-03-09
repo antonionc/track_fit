@@ -13,22 +13,28 @@ import SwiftUI
 
 struct TrackFitWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
-        ActivityConfiguration(for: RestTimerAttributes.self) { context in
+        ActivityConfiguration(for: WorkoutPlanAttributes.self) { context in
             // Lock screen/banner UI goes here
             HStack {
                 VStack(alignment: .leading) {
-                    Text("Resting: \(context.attributes.exerciseName)")
+                    Text(context.attributes.planName)
                         .font(.headline)
                         .foregroundColor(.white)
-                    Text("Up next: Set \(context.state.nextSetNumber)")
+                    Text("\(context.state.currentExerciseName) - Set \(context.state.currentSet) of \(context.state.totalSets)")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }
                 Spacer()
-                Text(timerInterval: Date()...context.state.endDate, countsDown: true)
-                    .font(.system(.title, design: .monospaced).weight(.bold))
-                    .foregroundColor(.cyan)
-                    .multilineTextAlignment(.trailing)
+                if context.state.isResting, let restEndDate = context.state.restEndDate {
+                    Text(timerInterval: Date()...restEndDate, countsDown: true)
+                        .font(.system(.title, design: .monospaced).weight(.bold))
+                        .foregroundColor(.cyan)
+                        .multilineTextAlignment(.trailing)
+                } else {
+                    Image(systemName: "figure.strengthtraining.traditional")
+                        .font(.title)
+                        .foregroundColor(.cyan)
+                }
             }
             .padding()
             .activityBackgroundTint(Color.black.opacity(0.8))
@@ -39,33 +45,45 @@ struct TrackFitWidgetLiveActivity: Widget {
                 // Expanded UI goes here. Compose the expanded UI through various regions.
                 DynamicIslandExpandedRegion(.leading) {
                     VStack(alignment: .leading) {
-                        Text("Rest")
+                        Text(context.attributes.planName)
                             .font(.caption)
                             .foregroundColor(.gray)
-                        Text("Set \(context.state.nextSetNumber)")
+                        Text("Set \(context.state.currentSet)/\(context.state.totalSets)")
                             .font(.headline)
                             .foregroundColor(.white)
                     }
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text(timerInterval: Date()...context.state.endDate, countsDown: true)
-                        .font(.title2.monospacedDigit())
-                        .foregroundColor(.cyan)
+                    if context.state.isResting, let restEndDate = context.state.restEndDate {
+                        Text(timerInterval: Date()...restEndDate, countsDown: true)
+                            .font(.title2.monospacedDigit())
+                            .foregroundColor(.cyan)
+                    } else {
+                         Image(systemName: "figure.strengthtraining.traditional")
+                             .foregroundColor(.cyan)
+                    }
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text(context.attributes.exerciseName)
+                    Text(context.state.currentExerciseName)
                         .font(.caption)
                         .foregroundColor(.gray)
                 }
             } compactLeading: {
-                Image(systemName: "timer")
+                Image(systemName: "figure.strengthtraining.traditional")
                     .foregroundColor(.cyan)
             } compactTrailing: {
-                Text(timerInterval: Date()...context.state.endDate, countsDown: true)
-                    .monospacedDigit()
-                    .frame(width: 40)
+                if context.state.isResting, let restEndDate = context.state.restEndDate {
+                    Text(timerInterval: Date()...restEndDate, countsDown: true)
+                        .monospacedDigit()
+                        .frame(width: 40)
+                        .foregroundColor(.cyan)
+                } else {
+                    Text("\(context.state.currentSet)/\(context.state.totalSets)")
+                         .font(.caption2)
+                         .foregroundColor(.cyan)
+                }
             } minimal: {
-                Image(systemName: "timer")
+                Image(systemName: "figure.strengthtraining.traditional")
                     .foregroundColor(.cyan)
             }
             .widgetURL(URL(string: "trackfit://"))
@@ -74,20 +92,20 @@ struct TrackFitWidgetLiveActivity: Widget {
     }
 }
 
-extension RestTimerAttributes {
-    fileprivate static var preview: RestTimerAttributes {
-        RestTimerAttributes(exerciseName: "Squat")
+extension WorkoutPlanAttributes {
+    fileprivate static var preview: WorkoutPlanAttributes {
+        WorkoutPlanAttributes(planName: "Push Day Workout")
     }
 }
 
-extension RestTimerAttributes.ContentState {
-    fileprivate static var previewState: RestTimerAttributes.ContentState {
-        RestTimerAttributes.ContentState(endDate: Date().addingTimeInterval(60), nextSetNumber: 2)
+extension WorkoutPlanAttributes.ContentState {
+    fileprivate static var previewState: WorkoutPlanAttributes.ContentState {
+        WorkoutPlanAttributes.ContentState(currentExerciseName: "Bench Press", currentSet: 2, totalSets: 4, isResting: true, restEndDate: Date().addingTimeInterval(60))
      }
 }
 
-#Preview("Notification", as: .content, using: RestTimerAttributes.preview) {
+#Preview("Notification", as: .content, using: WorkoutPlanAttributes.preview) {
    TrackFitWidgetLiveActivity()
 } contentStates: {
-    RestTimerAttributes.ContentState.previewState
+    WorkoutPlanAttributes.ContentState.previewState
 }

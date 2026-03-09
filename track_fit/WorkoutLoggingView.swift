@@ -84,11 +84,6 @@ struct WorkoutLoggingView: View {
                 } else {
                     self.sets.append(SetInput(weight: String(weight), reps: String(reps)))
                 }
-                
-                // Start Live Activity for Rest Timer (assuming 60s for now, syncing with watch timer)
-                let nextSet = self.sets.count + 1
-                let endDate = Calendar.current.date(byAdding: .second, value: 60, to: Date()) ?? Date()
-                LiveActivityManager.shared.startActivity(exerciseName: exerciseName, endDate: endDate, nextSetNumber: nextSet)
             }
         }
         .onReceive(watchSession.workoutSummaryPublisher) { hr, cal in
@@ -97,20 +92,12 @@ struct WorkoutLoggingView: View {
         }
         .onDisappear {
             watchSession.sendWorkoutStatus(isStarted: false)
-            LiveActivityManager.shared.endActivity()
         }
     }
     
     private func addSet() {
         let lastSet = sets.last
         sets.append(SetInput(weight: lastSet?.weight ?? "", reps: lastSet?.reps ?? ""))
-        
-        // Start Live Activity for Rest Timer from iOS
-        if let exerciseName = selectedExercise?.name {
-            let nextSet = sets.count + 1
-            let endDate = Calendar.current.date(byAdding: .second, value: 60, to: Date()) ?? Date()
-            LiveActivityManager.shared.startActivity(exerciseName: exerciseName, endDate: endDate, nextSetNumber: nextSet)
-        }
     }
     
     private func deleteSets(at offsets: IndexSet) {
@@ -118,7 +105,6 @@ struct WorkoutLoggingView: View {
     }
     
     private func saveWorkout() {
-        LiveActivityManager.shared.endActivity()
         guard let exercise = selectedExercise else { return }
         
         let log = StrengthWorkoutLog(date: date, exercise: exercise)

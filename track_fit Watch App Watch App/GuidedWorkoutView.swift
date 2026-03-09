@@ -38,6 +38,7 @@ struct GuidedWorkoutView: View {
                     .padding()
                 
                 Button("Finish") {
+                    WatchSessionManager.shared.sendPlanEnded()
                     dismiss()
                 }
                 .buttonStyle(.borderedProminent)
@@ -46,6 +47,11 @@ struct GuidedWorkoutView: View {
         }
         .navigationTitle(plan.name)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            if let firstEx = currentExercise {
+                WatchSessionManager.shared.sendPlanStarted(planName: plan.name, firstExerciseName: firstEx.exerciseName, totalSets: firstEx.targetSets)
+            }
+        }
     }
     
     private func activeExerciseView(exercise: PlannedExerciseTransfer) -> some View {
@@ -144,8 +150,19 @@ struct GuidedWorkoutView: View {
         if currentSetIndex == exercise.targetSets && currentExerciseIndex == exercises.count - 1 {
             // Workout complete! No rest needed.
             currentExerciseIndex += 1
+            WatchSessionManager.shared.sendPlanEnded()
         } else {
             isResting = true
+            let restTime = (currentSetIndex == exercise.targetSets) ? exercise.restAfterExerciseSeconds : exercise.restDurationSeconds
+            let restEndDate = Date().addingTimeInterval(TimeInterval(restTime))
+            
+            WatchSessionManager.shared.sendPlanUpdated(
+                currentExerciseName: exercise.exerciseName,
+                currentSet: currentSetIndex,
+                totalSets: exercise.targetSets,
+                isResting: true,
+                restEndDate: restEndDate
+            )
         }
     }
     
@@ -162,6 +179,16 @@ struct GuidedWorkoutView: View {
             weight = 0.0 // reset default weight or keep previous
         }
         reps = nil
+        
+        if let nextEx = currentExercise {
+            WatchSessionManager.shared.sendPlanUpdated(
+                currentExerciseName: nextEx.exerciseName,
+                currentSet: currentSetIndex,
+                totalSets: nextEx.targetSets,
+                isResting: false,
+                restEndDate: nil
+            )
+        }
     }
 }
 

@@ -30,6 +30,11 @@ class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
     let workoutFinishedPublisher = PassthroughSubject<Void, Never>()
     let workoutSummaryPublisher = PassthroughSubject<(Double, Double), Never>()
     
+    // Plan Tracking Publishers
+    let planStartedPublisher = PassthroughSubject<(String, String, Int), Never>()
+    let planUpdatedPublisher = PassthroughSubject<(String, Int, Int, Bool, Date?), Never>()
+    let planEndedPublisher = PassthroughSubject<Void, Never>()
+    
     // Legacy closures for existing simple UI listeners
     var onPlansReceived: (([PlannedWorkoutTransfer]) -> Void)?
     
@@ -60,6 +65,37 @@ class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
     #endif
     
     // MARK: - Sending Messages
+    
+    func sendPlanStarted(planName: String, firstExerciseName: String, totalSets: Int) {
+        guard WCSession.default.activationState == .activated else { return }
+        let msg: [String: Any] = [
+            "type": "planStarted",
+            "planName": planName,
+            "firstExerciseName": firstExerciseName,
+            "totalSets": totalSets
+        ]
+        WCSession.default.sendMessage(msg, replyHandler: nil)
+    }
+    
+    func sendPlanUpdated(currentExerciseName: String, currentSet: Int, totalSets: Int, isResting: Bool, restEndDate: Date?) {
+        guard WCSession.default.activationState == .activated else { return }
+        var msg: [String: Any] = [
+            "type": "planUpdated",
+            "currentExerciseName": currentExerciseName,
+            "currentSet": currentSet,
+            "totalSets": totalSets,
+            "isResting": isResting
+        ]
+        if let restEndDate = restEndDate {
+            msg["restEndDate"] = restEndDate.timeIntervalSince1970
+        }
+        WCSession.default.sendMessage(msg, replyHandler: nil)
+    }
+    
+    func sendPlanEnded() {
+        guard WCSession.default.activationState == .activated else { return }
+        WCSession.default.sendMessage(["type": "planEnded"], replyHandler: nil)
+    }
     
     func sendActiveExercise(_ name: String) {
         guard WCSession.default.activationState == .activated else { return }
@@ -136,6 +172,23 @@ class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
             guard let type = message["type"] as? String else { return }
             
             switch type {
+            case "planStarted":
+                if let name = message["planName"] as? String,
+                   let firstEx = message["firstExerciseName"] as? String,
+                   let total = message["totalSets"] as? Int {
+                    self.planStartedPublisher.send((name, firstEx, total))
+                }
+            case "planUpdated":
+                if let ex = message["currentExerciseName"] as? String,
+                   let set = message["currentSet"] as? Int,
+                   let total = message["totalSets"] as? Int,
+                   let isResting = message["isResting"] as? Bool {
+                    let dateDouble = message["restEndDate"] as? Double
+                    let date = dateDouble != nil ? Date(timeIntervalSince1970: dateDouble!) : nil
+                    self.planUpdatedPublisher.send((ex, set, total, isResting, date))
+                }
+            case "planEnded":
+                self.planEndedPublisher.send(())
             case "activeExercise":
                 if let name = message["name"] as? String {
                     self.activeExerciseName = name
