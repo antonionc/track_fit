@@ -23,19 +23,38 @@ final class track_fitUITests: XCTestCase {
     }
 
     @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    func testAppNavigationFlow() throws {
         let app = XCUIApplication()
         app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    @MainActor
-    func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
-        }
+        
+        // 1. Verify we start on Dashboard
+        XCTAssertTrue(app.staticTexts["Track Fit"].waitForExistence(timeout: 2))
+        
+        // 2. Navigate to Plans Tab
+        app.tabBars.buttons["Plans"].tap()
+        XCTAssertTrue(app.navigationBars.staticTexts["Workout Plans"].waitForExistence(timeout: 2) || app.staticTexts["Workout Plans"].exists)
+        
+        // 3. Navigate to Profile Tab
+        app.tabBars.buttons["Profile"].tap()
+        XCTAssertTrue(app.staticTexts["Profile"].waitForExistence(timeout: 2) || app.navigationBars.staticTexts["Profile"].exists)
+        
+        // 4. Go back to Dashboard
+        app.tabBars.buttons["Dashboard"].tap()
+        
+        // 5. Dashboard Quick Actions: Log Workout
+        app.buttons["Log Workout"].tap()
+        // Wait for WorkoutLoggingView to appear
+        XCTAssertTrue(app.staticTexts["Log Workout"].waitForExistence(timeout: 2) || app.navigationBars.staticTexts["Log Workout"].exists)
+        app.navigationBars.buttons.firstMatch.tap() // Back button
+        
+        // 6. Dashboard Quick Actions: Exercises
+        app.buttons["Exercises"].tap()
+        XCTAssertTrue(app.staticTexts["Exercises"].waitForExistence(timeout: 2) || app.navigationBars.staticTexts["Exercises"].exists)
+        app.navigationBars.buttons.firstMatch.tap() // Back button
+        
+        // 7. Dashboard Quick Actions: View Progress
+        app.buttons["View Progress"].tap()
+        XCTAssertTrue(app.staticTexts["Progress"].waitForExistence(timeout: 2) || app.navigationBars.staticTexts["Progress"].exists)
+        app.navigationBars.buttons.firstMatch.tap() // Back button
     }
 }
