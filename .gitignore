@@ -6,6 +6,8 @@
 track_fit.xcodeproj/xcuserdata/
 track_fit.xcodeproj/project.xcworkspace/xcuserdata/
 xcuserdata/
+# Temporary folder
+tmp/
 
 ## Build generated
 build/
