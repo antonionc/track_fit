@@ -9,19 +9,26 @@ struct PlansListView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(plans) { plan in
-                    NavigationLink(destination: PlanDetailView(plan: plan)) {
-                        VStack(alignment: .leading) {
-                            Text(plan.name)
-                                .font(.headline)
-                            Text("\(plan.exercises.count) exercises")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
+            ZStack {
+                Theme.Colors.background.ignoresSafeArea()
+                
+                List {
+                    ForEach(plans) { plan in
+                        NavigationLink(destination: PlanDetailView(plan: plan)) {
+                            VStack(alignment: .leading) {
+                                Text(plan.name)
+                                    .font(.headline)
+                                Text("\(plan.exercises.count) exercises")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
                         }
+                        .listRowBackground(Theme.Colors.cardBackground)
                     }
+                    .onDelete(perform: deletePlans)
                 }
-                .onDelete(perform: deletePlans)
+                .scrollContentBackground(.hidden)
+                .background(Color.clear)
             }
             .navigationTitle("Workout Plans")
             .toolbar {
@@ -46,7 +53,7 @@ struct PlansListView: View {
                 }
             }
             .onAppear(perform: syncPlansToWatch)
-            .onChange(of: plans) { _ in
+            .onChange(of: plans) {
                 syncPlansToWatch()
             }
         }
@@ -86,36 +93,43 @@ struct PlanDetailView: View {
     @State private var isWorkoutActive = false
     
     var body: some View {
-        VStack {
-            List {
-                ForEach(plan.exercises.sorted(by: { $0.order < $1.order })) { item in
-                    VStack(alignment: .leading) {
-                        Text(item.exercise?.name ?? "Unknown Exercise")
-                            .font(.headline)
-                        HStack {
-                            Text("\(item.targetSets) sets x \(item.targetReps)")
-                            Spacer()
-                            VStack(alignment: .trailing) {
-                                Text("Rest: \(item.restDurationSeconds)s")
-                                Text("Next Ex: \(item.restAfterExerciseSeconds)s")
-                                    .font(.caption2)
+        ZStack {
+            Theme.Colors.background.ignoresSafeArea()
+            
+            VStack {
+                List {
+                    ForEach(plan.exercises.sorted(by: { $0.order < $1.order })) { item in
+                        VStack(alignment: .leading) {
+                            Text(item.exercise?.name ?? "Unknown Exercise")
+                                .font(.headline)
+                            HStack {
+                                Text("\(item.targetSets) sets x \(item.targetReps)")
+                                Spacer()
+                                VStack(alignment: .trailing) {
+                                    Text("Rest: \(item.restDurationSeconds)s")
+                                    Text("Next Ex: \(item.restAfterExerciseSeconds)s")
+                                        .font(.caption2)
+                                }
+                                .foregroundColor(.secondary)
                             }
-                            .foregroundColor(.secondary)
+                            .font(.subheadline)
                         }
-                        .font(.subheadline)
+                        .listRowBackground(Theme.Colors.cardBackground)
                     }
                 }
+                .scrollContentBackground(.hidden)
+                .background(Color.clear)
+                
+                Button(action: { isWorkoutActive = true }) {
+                    Text("Start Workout")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.blue)
+                .padding()
             }
-            
-            Button(action: { isWorkoutActive = true }) {
-                Text("Start Workout")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(.blue)
-            .padding()
         }
         .navigationTitle(plan.name)
         .fullScreenCover(isPresented: $isWorkoutActive) {

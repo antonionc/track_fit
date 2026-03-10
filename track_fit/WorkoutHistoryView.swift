@@ -6,19 +6,26 @@ struct WorkoutHistoryView: View {
     @Query(sort: \StrengthWorkoutLog.date, order: .reverse) private var workoutLogs: [StrengthWorkoutLog]
     
     var body: some View {
-        List {
-            ForEach(workoutLogs) { log in
-                NavigationLink(destination: WorkoutDetailView(workout: log)) {
-                    VStack(alignment: .leading) {
-                        Text(log.exercise?.name ?? "Unknown Exercise")
-                            .font(.headline)
-                        Text(log.date.formatted(date: .abbreviated, time: .shortened))
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
+        ZStack {
+            Theme.Colors.background.ignoresSafeArea()
+            
+            List {
+                ForEach(workoutLogs) { log in
+                    NavigationLink(destination: WorkoutDetailView(workout: log)) {
+                        VStack(alignment: .leading) {
+                            Text(log.exercise?.name ?? "Unknown Exercise")
+                                .font(.headline)
+                            Text(log.date.formatted(date: .abbreviated, time: .shortened))
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
                     }
+                    .listRowBackground(Theme.Colors.cardBackground)
                 }
+                .onDelete(perform: deleteLog)
             }
-            .onDelete(perform: deleteLog)
+            .scrollContentBackground(.hidden)
+            .background(Color.clear)
         }
         .navigationTitle("Workout History")
         .overlay {

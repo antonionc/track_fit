@@ -21,43 +21,93 @@ struct WorkoutLoggingView: View {
     }
     
     var body: some View {
-        Form {
-            Section(header: Text("Exercise")) {
-                if exercises.isEmpty {
-                    Text("Please add an exercise from the Exercises tab first.")
-                        .foregroundColor(.secondary)
-                        .font(.caption)
-                } else {
-                    Picker("Select Exercise", selection: $selectedExercise) {
-                        Text("Select an exercise").tag(nil as StrengthExercise?)
-                        ForEach(exercises) { exercise in
-                            Text(exercise.name).tag(exercise as StrengthExercise?)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .onChange(of: selectedExercise) { newValue in
-                        if let name = newValue?.name {
-                            watchSession.sendActiveExercise(name)
-                        }
-                    }
-                }
-                DatePicker("Date", selection: $date, displayedComponents: .date)
-            }
+        ZStack {
+            Theme.Colors.background.ignoresSafeArea()
             
-            Section(header: Text("Sets")) {
-                ForEach($sets) { $set in
-                    HStack {
-                        TextField("Weight", text: $set.weight)
-                            .keyboardType(.decimalPad)
-                        TextField("Reps", text: $set.reps)
-                            .keyboardType(.numberPad)
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Exercise Section
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Exercise")
+                            .font(.headline)
+                            .foregroundColor(.gray)
+                        
+                        if exercises.isEmpty {
+                            Text("Please add an exercise from the Exercises tab first.")
+                                .foregroundColor(.secondary)
+                                .font(.caption)
+                        } else {
+                            Picker("Select Exercise", selection: $selectedExercise) {
+                                Text("Select an exercise").tag(nil as StrengthExercise?)
+                                ForEach(exercises) { exercise in
+                                    Text(exercise.name).tag(exercise as StrengthExercise?)
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            .onChange(of: selectedExercise) { _, newValue in
+                                if let name = newValue?.name {
+                                    watchSession.sendActiveExercise(name)
+                                }
+                            }
+                        }
+                        
+                        Divider()
+                            .padding(.vertical, 5)
+                        
+                        DatePicker("Date", selection: $date, displayedComponents: .date)
                     }
+                    .cardStyle()
+                    
+                    // Sets Section
+                    VStack(alignment: .leading, spacing: 15) {
+                        HStack {
+                            Text("Sets")
+                                .font(.headline)
+                                .foregroundColor(.gray)
+                            Spacer()
+                            Button(action: addSet) {
+                                Label("Add Set", systemImage: "plus")
+                            }
+                            .font(.subheadline.bold())
+                        }
+                        
+                        VStack(spacing: 10) {
+                            ForEach($sets) { $set in
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text("Weight")
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                        TextField("0", text: $set.weight)
+                                            .keyboardType(.decimalPad)
+                                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    }
+                                    VStack(alignment: .leading) {
+                                        Text("Reps")
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                        TextField("0", text: $set.reps)
+                                            .keyboardType(.numberPad)
+                                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    }
+                                    
+                                    Button(action: {
+                                        if let index = sets.firstIndex(where: { $0.id == set.id }) {
+                                            sets.remove(at: index)
+                                        }
+                                    }) {
+                                        Image(systemName: "trash")
+                                            .foregroundColor(.red)
+                                    }
+                                    .padding(.top, 16)
+                                }
+                                Divider()
+                            }
+                        }
+                    }
+                    .cardStyle()
                 }
-                .onDelete(perform: deleteSets)
-                
-                Button(action: addSet) {
-                    Label("Add Set", systemImage: "plus")
-                }
+                .padding()
             }
         }
         .navigationTitle("Log Workout")

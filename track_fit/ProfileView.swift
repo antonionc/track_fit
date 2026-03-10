@@ -1,19 +1,20 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @AppStorage("appTheme") private var appTheme: AppTheme = .system
     @State private var latestWeight: Double?
     @ObservedObject private var healthManager = HealthKitManager.shared
     
     var body: some View {
         NavigationView {
             ZStack {
-                Color(red: 0.07, green: 0.07, blue: 0.07).ignoresSafeArea()
+                Theme.Colors.background.ignoresSafeArea()
                 
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading, spacing: 30) {
                         Text("Profile")
                             .font(.largeTitle.bold())
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                             .padding(.top)
                         
                         VStack(alignment: .leading, spacing: 10) {
@@ -25,7 +26,7 @@ struct ProfileView: View {
                                 VStack(alignment: .leading) {
                                     Text("Body Weight")
                                         .font(.subheadline)
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.primary)
                                     
                                     if let weight = latestWeight {
                                         Text(String(format: "%.1f kg", weight))
@@ -45,7 +46,29 @@ struct ProfileView: View {
                                     .foregroundColor(.blue)
                             }
                             .padding()
-                            .background(Color.white.opacity(0.1))
+                            .background(Theme.Colors.cardBackground)
+                            .cornerRadius(12)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Settings")
+                                .font(.headline)
+                                .foregroundColor(.gray)
+                            
+                            HStack {
+                                Text("Appearance")
+                                    .foregroundColor(.primary)
+                                Spacer()
+                                Picker("Appearance", selection: $appTheme) {
+                                    ForEach(AppTheme.allCases) { theme in
+                                        Text(theme.rawValue).tag(theme)
+                                    }
+                                }
+                                .pickerStyle(SegmentedPickerStyle())
+                                .frame(width: 200)
+                            }
+                            .padding()
+                            .background(Theme.Colors.cardBackground)
                             .cornerRadius(12)
                         }
                     }
@@ -56,7 +79,7 @@ struct ProfileView: View {
             .onAppear {
                 fetchHealthData()
             }
-            .onChange(of: healthManager.isAuthorized) { isAuthorized in
+            .onChange(of: healthManager.isAuthorized) { _, isAuthorized in
                 if isAuthorized {
                     healthManager.fetchLatestWeight { weight in
                         self.latestWeight = weight

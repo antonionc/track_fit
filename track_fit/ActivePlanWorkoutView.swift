@@ -22,27 +22,31 @@ struct ActivePlanWorkoutView: View {
     }
     
     var body: some View {
-        VStack {
-            if let exercise = currentExercise {
-                if isResting {
-                    // Show rest timer sheet or view
-                    let restTime = (currentSetIndex == exercise.targetSets) ? exercise.restAfterExerciseSeconds : exercise.restDurationSeconds
-                    restView(durationSeconds: restTime)
+        ZStack {
+            Theme.Colors.background.ignoresSafeArea()
+            
+            VStack {
+                if let exercise = currentExercise {
+                    if isResting {
+                        // Show rest timer sheet or view
+                        let restTime = (currentSetIndex == exercise.targetSets) ? exercise.restAfterExerciseSeconds : exercise.restDurationSeconds
+                        restView(durationSeconds: restTime)
+                    } else {
+                        activeExerciseView(exercise: exercise)
+                    }
                 } else {
-                    activeExerciseView(exercise: exercise)
+                    Text("Workout Complete!")
+                        .font(.headline)
+                        .foregroundColor(.green)
+                        .padding()
+                    
+                    Button("Finish") {
+                        LiveActivityManager.shared.endActivity()
+                        dismiss()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.green)
                 }
-            } else {
-                Text("Workout Complete!")
-                    .font(.headline)
-                    .foregroundColor(.green)
-                    .padding()
-                
-                Button("Finish") {
-                    LiveActivityManager.shared.endActivity()
-                    dismiss()
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.green)
             }
         }
         .navigationTitle(plan.name)
@@ -100,7 +104,7 @@ struct ActivePlanWorkoutView: View {
                 }
             }
             .padding()
-            .background(Color(UIColor.secondarySystemBackground))
+            .background(Theme.Colors.cardBackground)
             .cornerRadius(12)
             
             Spacer()
@@ -180,8 +184,6 @@ struct ActivePlanWorkoutView: View {
         guard let exercise = currentExercise else { return }
         isResting = false
         restEndDate = nil
-        
-        let oldTargetSets = exercise.targetSets
         
         if currentSetIndex < exercise.targetSets {
             currentSetIndex += 1

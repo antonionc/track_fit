@@ -7,19 +7,26 @@ struct ExerciseListView: View {
     @State private var showingAddExercise = false
     
     var body: some View {
-        List {
-            ForEach(exercises) { exercise in
-                VStack(alignment: .leading) {
-                    Text(exercise.name)
-                        .font(.headline)
-                    if let group = exercise.muscleGroup {
-                        Text(group)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+        ZStack {
+            Theme.Colors.background.ignoresSafeArea()
+            
+            List {
+                ForEach(exercises) { exercise in
+                    VStack(alignment: .leading) {
+                        Text(exercise.name)
+                            .font(.headline)
+                        if let group = exercise.muscleGroup {
+                            Text(group)
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
                     }
+                    .listRowBackground(Theme.Colors.cardBackground)
                 }
+                .onDelete(perform: deleteExercises)
             }
-            .onDelete(perform: deleteExercises)
+            .scrollContentBackground(.hidden)
+            .background(Color.clear)
         }
         .navigationTitle("Exercises")
         .toolbar {
@@ -50,11 +57,19 @@ struct AddExerciseView: View {
     
     var body: some View {
         NavigationView {
-            Form {
-                Section(header: Text("Exercise Details")) {
-                    TextField("Name", text: $name)
-                    TextField("Muscle Group", text: $muscleGroup)
+            ZStack {
+                Theme.Colors.background.ignoresSafeArea()
+                
+                List {
+                    Section(header: Text("Exercise Details")) {
+                        TextField("Name", text: $name)
+                            .listRowBackground(Theme.Colors.cardBackground)
+                        TextField("Muscle Group", text: $muscleGroup)
+                            .listRowBackground(Theme.Colors.cardBackground)
+                    }
                 }
+                .scrollContentBackground(.hidden)
+                .background(Color.clear)
             }
             .navigationTitle("New Exercise")
             .toolbar {

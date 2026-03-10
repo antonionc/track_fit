@@ -38,7 +38,7 @@ struct DashboardView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(red: 0.07, green: 0.07, blue: 0.07).ignoresSafeArea()
+                Theme.Colors.background.ignoresSafeArea()
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
@@ -71,7 +71,7 @@ struct DashboardView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Track Fit")
                     .font(.system(size: 34, weight: .bold, design: .rounded))
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                 Text("Let's crush it today!")
                     .font(.subheadline)
                     .foregroundColor(.gray)
@@ -104,7 +104,7 @@ struct DashboardView: View {
             HStack {
                 Text("Recent Workouts")
                     .font(.headline)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                 
                 Spacer()
                 
@@ -120,7 +120,7 @@ struct DashboardView: View {
                     .foregroundColor(.gray)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.white.opacity(0.05))
+                    .background(Theme.Colors.cardBackground)
                     .cornerRadius(12)
             } else {
                 ForEach(workoutLogs.prefix(5)) { log in
@@ -146,24 +146,18 @@ struct DashboardView: View {
                 )
             Text(title)
                 .font(.subheadline.bold())
-                .foregroundColor(.white)
+                .foregroundColor(.primary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white.opacity(0.05))
+                .fill(Theme.Colors.cardBackground)
                 .background(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(
-                            LinearGradient(
-                                colors: [Color.white.opacity(0.2), Color.white.opacity(0.05)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ),
-                            lineWidth: 1
-                        )
+                        .stroke(Theme.Colors.cardBorder, lineWidth: 1)
                 )
+                .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
         )
     }
 }
@@ -176,7 +170,7 @@ struct WorkoutRow: View {
             VStack(alignment: .leading) {
                 Text(log.exercise?.name ?? "Unknown Exercise")
                     .font(.body.bold())
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                 Text(log.date.formatted(date: .abbreviated, time: .omitted))
                     .font(.caption)
                     .foregroundColor(.gray)
@@ -191,7 +185,7 @@ struct WorkoutRow: View {
                 .clipShape(Capsule())
         }
         .padding()
-        .background(Color.white.opacity(0.05))
+        .background(Theme.Colors.cardBackground)
         .cornerRadius(12)
     }
 }

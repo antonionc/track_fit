@@ -19,13 +19,16 @@ struct CreatePlanView: View {
     }
     
     var body: some View {
-        Form {
-            Section(header: Text("Plan Details")) {
-                TextField("Plan Name", text: $planName)
-            }
+        ZStack {
+            Theme.Colors.background.ignoresSafeArea()
             
-            Section(header: Text("Exercises")) {
-                List {
+            List {
+                Section(header: Text("Plan Details")) {
+                    TextField("Plan Name", text: $planName)
+                        .listRowBackground(Theme.Colors.cardBackground)
+                }
+                
+                Section(header: Text("Exercises")) {
                     ForEach($items) { $item in
                         VStack(alignment: .leading, spacing: 10) {
                             Picker("Exercise", selection: $item.exercise) {
@@ -43,21 +46,25 @@ struct CreatePlanView: View {
                                     .textFieldStyle(RoundedBorderTextFieldStyle())
                             }
                             
-                            Stepper("Rest between sets: \(item.restDuration)s", value: $item.restDuration, in: 0...300, step: 15)
-                            Stepper("Rest after exercise: \(item.restAfterExercise)s", value: $item.restAfterExercise, in: 0...600, step: 15)
+                            Stepper("Rest btn sets: \(item.restDuration)s", value: $item.restDuration, in: 0...300, step: 15)
+                            Stepper("Rest post ex: \(item.restAfterExercise)s", value: $item.restAfterExercise, in: 0...600, step: 15)
                         }
                         .padding(.vertical, 5)
+                        .listRowBackground(Theme.Colors.cardBackground)
                     }
                     .onDelete(perform: deleteItems)
                     .onMove(perform: moveItems)
-                }
-                
-                Button(action: {
-                    items.append(ExerciseItemInput())
-                }) {
-                    Label("Add Exercise", systemImage: "plus.circle")
+                    
+                    Button(action: {
+                        items.append(ExerciseItemInput())
+                    }) {
+                        Label("Add Exercise", systemImage: "plus.circle")
+                    }
+                    .listRowBackground(Theme.Colors.cardBackground)
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color.clear)
         }
         .navigationTitle("New Plan")
         .navigationBarTitleDisplayMode(.inline)

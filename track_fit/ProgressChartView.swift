@@ -22,7 +22,10 @@ struct ProgressChartView: View {
     @State private var selectedMetric: ProgressMetric = .volume
     
     var body: some View {
-        VStack {
+        ZStack {
+            Theme.Colors.background.ignoresSafeArea()
+            
+            VStack {
             HStack {
                 Picker("Metric", selection: $selectedMetric) {
                     ForEach(ProgressMetric.allCases) { metric in
@@ -107,6 +110,7 @@ struct ProgressChartView: View {
                     self.latestWeight = weight
                 }
             }
+        }
         }
     }
     
