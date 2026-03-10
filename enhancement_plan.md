@@ -33,7 +33,7 @@ This is where the Apple Watch integration becomes truly powerful by merging stre
 
 ## Phase 4: Modern iOS Experiences (Dynamic Island)
 
-- [ ] **Live Activities**: When a user is resting between sets, display a Live Activity on the iPhone Lock Screen and Dynamic Island showing the countdown timer and what the next exercise is. This allows users to stay engaged without keeping the app open.
+- [x] **Live Activities**: When a user is resting between sets, display a Live Activity on the iPhone Lock Screen and Dynamic Island showing the countdown timer and what the next exercise is. This allows users to stay engaged without keeping the app open.
 
 ## Phase 4.5: Planned Workout Sessions (Guided Training)
 
