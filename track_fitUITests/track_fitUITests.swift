@@ -20,8 +20,6 @@ final class track_fitUITests: XCTestCase {
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
     @MainActor
     func testAppNavigationFlow() throws {
         let app = XCUIApplication()
@@ -43,7 +41,6 @@ final class track_fitUITests: XCTestCase {
         
         // 5. Dashboard Quick Actions: Log Workout
         app.buttons["Log Workout"].tap()
-        // Wait for WorkoutLoggingView to appear
         XCTAssertTrue(app.staticTexts["Log Workout"].waitForExistence(timeout: 2) || app.navigationBars.staticTexts["Log Workout"].exists)
         app.navigationBars.buttons.firstMatch.tap() // Back button
         
@@ -56,5 +53,85 @@ final class track_fitUITests: XCTestCase {
         app.buttons["View Progress"].tap()
         XCTAssertTrue(app.staticTexts["Progress"].waitForExistence(timeout: 2) || app.navigationBars.staticTexts["Progress"].exists)
         app.navigationBars.buttons.firstMatch.tap() // Back button
+    }
+    
+    @MainActor
+    func testWorkoutHistoryNavigation() throws {
+        let app = XCUIApplication()
+        app.launch()
+        
+        // Navigate to Workout History
+        let seeAllButton = app.buttons["See All"]
+        XCTAssertTrue(seeAllButton.waitForExistence(timeout: 3))
+        seeAllButton.tap()
+        
+        XCTAssertTrue(app.navigationBars["Workout History"].waitForExistence(timeout: 2) || app.staticTexts["Workout History"].waitForExistence(timeout: 2))
+    }
+    
+    @MainActor
+    func testCreatePlanAndStartWorkout() throws {
+        let app = XCUIApplication()
+        app.launch()
+        
+        // 1. Create an exercise
+        app.buttons["Exercises"].tap()
+        app.navigationBars.buttons["Add"].tap()
+        
+        let exNameField = app.textFields["Exercise Name"]
+        XCTAssertTrue(exNameField.waitForExistence(timeout: 2))
+        exNameField.tap()
+        exNameField.typeText("Squat")
+        
+        app.navigationBars.buttons["Save"].tap()
+        app.navigationBars.buttons.firstMatch.tap()
+        
+        // 2. Create Plan
+        app.tabBars.buttons["Plans"].tap()
+        app.navigationBars.buttons["Add"].tap()
+        
+        let planNameField = app.textFields["Plan Name"]
+        XCTAssertTrue(planNameField.waitForExistence(timeout: 2))
+        planNameField.tap()
+        planNameField.typeText("Leg Day")
+        
+        app.buttons["Add Exercise"].tap()
+        
+        // Tap Picker. The label is usually "Exercise, Select"
+        let picker = app.buttons.matching(NSPredicate(format: "label CONTAINS 'Exercise'")).firstMatch
+        if picker.waitForExistence(timeout: 2) {
+            picker.tap()
+            let squatOption = app.buttons["Squat"]
+            if squatOption.waitForExistence(timeout: 2) {
+                squatOption.tap()
+            }
+        }
+        
+        app.navigationBars.buttons["Save"].tap()
+        
+        // Wait and start
+        let planRow = app.staticTexts["Leg Day"]
+        if planRow.waitForExistence(timeout: 3) {
+            planRow.tap()
+            app.buttons["Start Workout"].tap()
+            
+            // Advance through workout
+            let logRest = app.buttons["Log & Rest"]
+            if logRest.waitForExistence(timeout: 3) {
+                logRest.tap()
+                let skip = app.buttons["Skip Rest"]
+                if skip.waitForExistence(timeout: 2) {
+                    skip.tap()
+                }
+            }
+            
+            // Assuming default plan has 3 sets, click 2 more times to finish
+            if logRest.exists { logRest.tap(); if app.buttons["Skip Rest"].waitForExistence(timeout: 1) { app.buttons["Skip Rest"].tap() } }
+            if app.buttons["Finish Workout"].waitForExistence(timeout: 2) {
+                app.buttons["Finish Workout"].tap()
+            }
+            if app.buttons["Finish"].waitForExistence(timeout: 2) {
+                app.buttons["Finish"].tap()
+            }
+        }
     }
 }
