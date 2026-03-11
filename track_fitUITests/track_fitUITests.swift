@@ -20,6 +20,8 @@ final class track_fitUITests: XCTestCase {
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+
     @MainActor
     func testAppNavigationFlow() throws {
         let app = XCUIApplication()
@@ -75,9 +77,9 @@ final class track_fitUITests: XCTestCase {
         
         // 1. Create an exercise
         app.buttons["Exercises"].tap()
-        app.navigationBars.buttons["Add"].tap()
+        app.navigationBars.buttons["Add Exercise"].tap()
         
-        let exNameField = app.textFields["Exercise Name"]
+        let exNameField = app.textFields["Name"]
         XCTAssertTrue(exNameField.waitForExistence(timeout: 2))
         exNameField.tap()
         exNameField.typeText("Squat")
@@ -100,7 +102,7 @@ final class track_fitUITests: XCTestCase {
         let picker = app.buttons.matching(NSPredicate(format: "label CONTAINS 'Exercise'")).firstMatch
         if picker.waitForExistence(timeout: 2) {
             picker.tap()
-            let squatOption = app.buttons["Squat"]
+            let squatOption = app.buttons["Squat"].firstMatch
             if squatOption.waitForExistence(timeout: 2) {
                 squatOption.tap()
             }
@@ -109,7 +111,7 @@ final class track_fitUITests: XCTestCase {
         app.navigationBars.buttons["Save"].tap()
         
         // Wait and start
-        let planRow = app.staticTexts["Leg Day"]
+        let planRow = app.staticTexts["Leg Day"].firstMatch
         if planRow.waitForExistence(timeout: 3) {
             planRow.tap()
             app.buttons["Start Workout"].tap()
@@ -132,6 +134,14 @@ final class track_fitUITests: XCTestCase {
             if app.buttons["Finish"].waitForExistence(timeout: 2) {
                 app.buttons["Finish"].tap()
             }
+        }
+        
+        // 3. Clean up the plan we just created
+        app.tabBars.buttons["Plans"].tap()
+        let planToDelete = app.staticTexts["Leg Day"].firstMatch
+        if planToDelete.waitForExistence(timeout: 2) {
+            planToDelete.swipeLeft()
+            app.buttons["Delete"].tap()
         }
     }
 }
